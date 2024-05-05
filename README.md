@@ -2,7 +2,13 @@
 Forum social pour les fans de cinéma, basé sur une base de données, utilisant PostgreSQL pour le traitement des données et des requêtes SQL interactives pour un contenu personnalisé et des recommandations.
 
 ### Utilisation
-Après avoir accédé au shell postgres, exécutez les commandes suivantes pour créer la base de données et les tables :
+Pour générer les fichiers csv, exécutez les commandes suivantes :
+
+```bash
+python3 generate_csv.py
+```
+
+Après avoir accédé au shell postgres, exécutez les commandes suivantes pour créer la base de données et les tables ainsi que pour insérer les données dans les tables à partir des fichiers csv:
 
 ```sql
 \i init_db.sql
