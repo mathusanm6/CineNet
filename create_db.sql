@@ -46,10 +46,10 @@ CREATE TABLE
         country_code CHAR(3) NOT NULL REFERENCES Countries (country_code)
     );
 
-DROP TABLE IF EXISTS UserLocation CASCADE;
+DROP TABLE IF EXISTS UserLocations CASCADE;
 
 CREATE TABLE
-    UserLocation (
+    UserLocations (
         user_id INTEGER NOT NULL REFERENCES Users (id),
         city_code INTEGER NOT NULL REFERENCES Cities (city_code),
         PRIMARY KEY (user_id, city_code)
@@ -198,8 +198,7 @@ DROP TABLE IF EXISTS People CASCADE;
 CREATE TABLE
     People (
         id INTEGER PRIMARY KEY,
-        last_name VARCHAR(255) NOT NULL,
-        first_name VARCHAR(255) NOT NULL,
+        name VARCHAR(255) NOT NULL,
         birth_date DATE NOT NULL
     );
 
