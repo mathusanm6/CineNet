@@ -1,12 +1,19 @@
 # CineNet
-Database-driven social forum for movie fans, featuring PostgreSQL for data handling and interactive SQL queries for personalised content and recommendations.
+Forum social pour les fans de cinéma, basé sur une base de données, utilisant PostgreSQL pour le traitement des données et des requêtes SQL interactives pour un contenu personnalisé et des recommandations.
 
 ### Utilisation
-After getting to the postgres shell, run the following commands to create the database and the tables:
+Après avoir accédé au shell postgres, exécutez les commandes suivantes pour créer la base de données et les tables :
 
 ```sql
-\i prepare_db.sql
+\i init_db.sql
 ```
 
-### Errors on the ERD
-- The `Genre` table Shouldn't have a release date attribute.
+#### Pour les recommandations, exécutez les commandes suivantes après avoir inséré des données dans les tables :
+
+```sql
+\i movie_recommendation.sql
+\i event_recommendation.sql
+```
+
+### Erreurs sur le diagramme ER
+- La table `Genre` ne devrait pas avoir d'attribut de date de sortie (mauvaise indication sur le diagramme)
