@@ -61,18 +61,18 @@ SELECT city_code, name, country_code FROM temp_cities;
 
 DROP TABLE IF EXISTS temp_cities;
 
--- Import des données pour UserLocation
-CREATE TEMP TABLE temp_userlocation (
+-- Import des données pour UserLocations
+CREATE TEMP TABLE temp_userlocations (
     user_id INTEGER,
     city_code INTEGER
 );
 
-\copy temp_userlocation(user_id, city_code) from './CSV/userlocation.csv' WITH DELIMITER ',' CSV HEADER;
+\copy temp_userlocations(user_id, city_code) from './CSV/userlocations.csv' WITH DELIMITER ',' CSV HEADER;
 
-INSERT INTO UserLocation (user_id, city_code)
-SELECT user_id, city_code FROM temp_userlocation;
+INSERT INTO UserLocations (user_id, city_code)
+SELECT user_id, city_code FROM temp_userlocations;
 
-DROP TABLE IF EXISTS temp_userlocation;
+DROP TABLE IF EXISTS temp_userlocations;
 
 -- Import des données pour Friendship
 CREATE TEMP TABLE temp_friendship (
@@ -277,15 +277,14 @@ DROP TABLE IF EXISTS temp_moviestudios;
 -- Import des données pour People
 CREATE TEMP TABLE temp_people (
     id SERIAL PRIMARY KEY,
-    last_name VARCHAR(255),
-    first_name VARCHAR(255),
+    name VARCHAR(255),
     birth_date DATE
 );
 
-\copy temp_people(id, last_name, first_name, birth_date) from './CSV/people.csv' WITH DELIMITER ',' CSV HEADER;
+\copy temp_people(id, name, birth_date) from './CSV/people.csv' WITH DELIMITER ',' CSV HEADER;
 
-INSERT INTO People (id, last_name, first_name, birth_date)
-SELECT id, last_name, first_name, birth_date FROM temp_people;
+INSERT INTO People (id, name, birth_date)
+SELECT id, name, birth_date FROM temp_people;
 
 DROP TABLE IF EXISTS temp_people;
 
