@@ -136,8 +136,9 @@ CREATE TABLE
         ticket_price NUMERIC NOT NULL
     );
 
-ALTER TABLE Events ADD COLUMN status VARCHAR(255) NOT NULL;  -- Add status column (Archived or Upcoming)
-
+-- Enabling different event types (UpcomingEvents, ArchivedEvents)
+ALTER TABLE Events
+ADD COLUMN status VARCHAR(255) NOT NULL;
 
 DROP TABLE IF EXISTS Participation CASCADE;
 
@@ -147,6 +148,17 @@ CREATE TABLE
         event_id INTEGER NOT NULL REFERENCES Events (id),
         type_participation VARCHAR(255) NOT NULL,
         PRIMARY KEY (user_id, event_id)
+    );
+
+DROP TABLE IF EXISTS Screenings CASCADE;
+
+CREATE TABLE
+    Screenings (
+        id SERIAL PRIMARY KEY,
+        event_id INTEGER NOT NULL REFERENCES Events (id),
+        movie_id INTEGER NOT NULL REFERENCES Movies (id),
+        screening_time TIMESTAMP NOT NULL,
+        PRIMARY KEY (event_id, movie_id)
     );
 
 -- Movies, genres, and collaborators
