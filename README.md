@@ -14,7 +14,7 @@ Après avoir accédé au shell postgres, exécutez les commandes suivantes pour 
 \i init_db.sql
 ```
 
-#### Pour les recommandations, exécutez les commandes suivantes après avoir inséré des données dans les tables :
+#### Pour préparer les recommandations, exécutez les commandes suivantes après avoir inséré des données dans les tables :
 
 ```sql
 \i movie_recommendation.sql
