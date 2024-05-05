@@ -19,6 +19,7 @@ Après avoir accédé au shell postgres, exécutez les commandes suivantes pour 
 ```sql
 \i movie_recommendation.sql
 \i event_recommendation.sql
+\i post_recommendation.sql
 ```
 
 ### Erreurs sur le diagramme ER

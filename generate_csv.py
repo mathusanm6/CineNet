@@ -321,7 +321,7 @@ reactions = pd.DataFrame(
     {
         "user_id": np.random.choice(users["id"], n_reactions),
         "post_id": np.random.choice(posts["id"], n_reactions),
-        "emoji": np.random.choice(["😀", "😢", "👍", "👎", "❤️"], n_reactions),
+        "emoji": np.random.choice(["😄", "🙂", "😐", "🙁", "😩"], n_reactions),
     }
 )
 
