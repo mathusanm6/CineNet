@@ -9,7 +9,7 @@ DROP TABLE IF EXISTS UserRoles CASCADE;
 
 CREATE TABLE
     UserRoles (
-        type SERIAL PRIMARY KEY,
+        type INTEGER PRIMARY KEY,
         name VARCHAR(255) NOT NULL,
         description TEXT
     );
@@ -18,7 +18,7 @@ DROP TABLE IF EXISTS Users CASCADE;
 
 CREATE TABLE
     Users (
-        id SERIAL PRIMARY KEY,
+        id INTEGER PRIMARY KEY,
         last_name VARCHAR(255) NOT NULL,
         first_name VARCHAR(255) NOT NULL,
         username VARCHAR(255) UNIQUE NOT NULL,
@@ -41,7 +41,7 @@ DROP TABLE IF EXISTS Cities CASCADE;
 
 CREATE TABLE
     Cities (
-        city_code SERIAL PRIMARY KEY,
+        city_code INTEGER PRIMARY KEY,
         name VARCHAR(255) NOT NULL,
         country_code CHAR(3) NOT NULL REFERENCES Countries (country_code)
     );
@@ -81,7 +81,7 @@ DROP TABLE IF EXISTS Categories CASCADE;
 
 CREATE TABLE
     Categories (
-        id SERIAL PRIMARY KEY,
+        id INTEGER PRIMARY KEY,
         name VARCHAR(255) NOT NULL,
         description TEXT
     );
@@ -90,7 +90,7 @@ DROP TABLE IF EXISTS Posts CASCADE;
 
 CREATE TABLE
     Posts (
-        id SERIAL PRIMARY KEY,
+        id INTEGER PRIMARY KEY,
         user_id INTEGER NOT NULL REFERENCES Users (id),
         date TIMESTAMP NOT NULL,
         content TEXT NOT NULL,
@@ -101,7 +101,7 @@ CREATE TABLE
 DROP TABLE IF EXISTS Tags CASCADE;
 
 CREATE TABLE
-    Tags (id SERIAL PRIMARY KEY, name VARCHAR(255) NOT NULL);
+    Tags (id INTEGER PRIMARY KEY, name VARCHAR(255) NOT NULL);
 
 DROP TABLE IF EXISTS PostTags CASCADE;
 
@@ -127,7 +127,7 @@ DROP TABLE IF EXISTS Events CASCADE;
 
 CREATE TABLE
     Events (
-        id SERIAL PRIMARY KEY,
+        id INTEGER PRIMARY KEY,
         name VARCHAR(255) NOT NULL,
         date TIMESTAMP NOT NULL,
         city_code INTEGER NOT NULL REFERENCES Cities (city_code),
@@ -155,7 +155,7 @@ DROP TABLE IF EXISTS Genres CASCADE;
 
 CREATE TABLE
     Genres (
-        id SERIAL PRIMARY KEY,
+        id INTEGER PRIMARY KEY,
         name VARCHAR(255) NOT NULL,
         parent_genre_id INTEGER REFERENCES Genres (id)
     );
@@ -163,13 +163,13 @@ CREATE TABLE
 DROP TABLE IF EXISTS Studios CASCADE;
 
 CREATE TABLE
-    Studios (id SERIAL PRIMARY KEY, name VARCHAR(255) NOT NULL);
+    Studios (id INTEGER PRIMARY KEY, name VARCHAR(255) NOT NULL);
 
 DROP TABLE IF EXISTS Movies CASCADE;
 
 CREATE TABLE
     Movies (
-        id SERIAL PRIMARY KEY,
+        id INTEGER PRIMARY KEY,
         title VARCHAR(255) NOT NULL,
         duration INTEGER NOT NULL,
         release_date DATE NOT NULL
@@ -197,7 +197,7 @@ DROP TABLE IF EXISTS People CASCADE;
 
 CREATE TABLE
     People (
-        id SERIAL PRIMARY KEY,
+        id INTEGER PRIMARY KEY,
         last_name VARCHAR(255) NOT NULL,
         first_name VARCHAR(255) NOT NULL,
         birth_date DATE NOT NULL
@@ -206,7 +206,7 @@ CREATE TABLE
 DROP TABLE IF EXISTS PeopleRoles CASCADE;
 
 CREATE TABLE
-    PeopleRoles (id SERIAL PRIMARY KEY, name VARCHAR(255));
+    PeopleRoles (id INTEGER PRIMARY KEY, name VARCHAR(255));
 
 DROP TABLE IF EXISTS MovieCollaborators CASCADE;
 

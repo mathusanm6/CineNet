@@ -3,19 +3,21 @@ SET search_path TO cine_net;
 
 -- Import des données pour UserRoles
 CREATE TEMP TABLE temp_userroles (
+    type SERIAL PRIMARY KEY,
     name VARCHAR(255),
     description TEXT
 );
 
-\copy temp_userroles(name, description) from './CSV/userroles.csv' WITH DELIMITER ',' CSV HEADER;
+\copy temp_userroles(type, name, description) from './CSV/userroles.csv' WITH DELIMITER ',' CSV HEADER;
 
-INSERT INTO UserRoles (name, description)
-SELECT name, description FROM temp_userroles;
+INSERT INTO UserRoles (type, name, description)
+SELECT type, name, description FROM temp_userroles;
 
 DROP TABLE IF EXISTS temp_userroles;
 
 -- Import des données pour Users
 CREATE TEMP TABLE temp_users (
+    id SERIAL PRIMARY KEY,
     last_name VARCHAR(255),
     first_name VARCHAR(255),
     username VARCHAR(255),
@@ -25,10 +27,10 @@ CREATE TEMP TABLE temp_users (
     role_type INTEGER
 );
 
-\copy temp_users(last_name, first_name, username, email, password, birth_date, role_type) from './CSV/users.csv' WITH DELIMITER ',' CSV HEADER;
+\copy temp_users(id, last_name, first_name, username, email, password, birth_date, role_type) from './CSV/users.csv' WITH DELIMITER ',' CSV HEADER;
 
-INSERT INTO Users (last_name, first_name, username, email, password, birth_date, role_type)
-SELECT last_name, first_name, username, email, password, birth_date, role_type FROM temp_users;
+INSERT INTO Users (id, last_name, first_name, username, email, password, birth_date, role_type)
+SELECT id, last_name, first_name, username, email, password, birth_date, role_type FROM temp_users;
 
 DROP TABLE IF EXISTS temp_users;
 
@@ -47,14 +49,15 @@ DROP TABLE IF EXISTS temp_countries;
 
 -- Import des données pour Cities
 CREATE TEMP TABLE temp_cities (
+    city_code SERIAL PRIMARY KEY,
     name VARCHAR(255),
     country_code CHAR(3)
 );
 
-\copy temp_cities(name, country_code) from './CSV/cities.csv' WITH DELIMITER ',' CSV HEADER;
+\copy temp_cities(city_code, name, country_code) from './CSV/cities.csv' WITH DELIMITER ',' CSV HEADER;
 
-INSERT INTO Cities (name, country_code)
-SELECT name, country_code FROM temp_cities;
+INSERT INTO Cities (city_code, name, country_code)
+SELECT city_code, name, country_code FROM temp_cities;
 
 DROP TABLE IF EXISTS temp_cities;
 
@@ -101,19 +104,21 @@ DROP TABLE IF EXISTS temp_following;
 
 -- Import des données pour Categories
 CREATE TEMP TABLE temp_categories (
+    id SERIAL PRIMARY KEY,
     name VARCHAR(255),
     description TEXT
 );
 
-\copy temp_categories(name, description) from './CSV/categories.csv' WITH DELIMITER ',' CSV HEADER;
+\copy temp_categories(id, name, description) from './CSV/categories.csv' WITH DELIMITER ',' CSV HEADER;
 
-INSERT INTO Categories (name, description)
-SELECT name, description FROM temp_categories;
+INSERT INTO Categories (id, name, description)
+SELECT id, name, description FROM temp_categories;
 
 DROP TABLE IF EXISTS temp_categories;
 
 -- Import des données pour Posts
 CREATE TEMP TABLE temp_posts (
+    id SERIAL PRIMARY KEY,
     user_id INTEGER,
     date TIMESTAMP,
     content TEXT,
@@ -121,22 +126,23 @@ CREATE TEMP TABLE temp_posts (
     category_id INTEGER
 );
 
-\copy temp_posts(user_id, date, content, parent_post_id, category_id) from './CSV/posts.csv' WITH DELIMITER ',' CSV HEADER;
+\copy temp_posts(id, user_id, date, content, parent_post_id, category_id) from './CSV/posts.csv' WITH DELIMITER ',' CSV HEADER;
 
-INSERT INTO Posts (user_id, date, content, parent_post_id, category_id)
-SELECT user_id, date, content, parent_post_id, category_id FROM temp_posts;
+INSERT INTO Posts (id, user_id, date, content, parent_post_id, category_id)
+SELECT id, user_id, date, content, parent_post_id, category_id FROM temp_posts;
 
 DROP TABLE IF EXISTS temp_posts;
 
 -- Import des données pour Tags
 CREATE TEMP TABLE temp_tags (
+    id SERIAL PRIMARY KEY,
     name VARCHAR(255)
 );
 
-\copy temp_tags(name) from './CSV/tags.csv' WITH DELIMITER ',' CSV HEADER;
+\copy temp_tags(id, name) from './CSV/tags.csv' WITH DELIMITER ',' CSV HEADER;
 
-INSERT INTO Tags (name)
-SELECT name FROM temp_tags;
+INSERT INTO Tags (id, name)
+SELECT id, name FROM temp_tags;
 
 DROP TABLE IF EXISTS temp_tags;
 
@@ -169,6 +175,7 @@ DROP TABLE IF EXISTS temp_reactions;
 
 -- Import des données pour Events
 CREATE TEMP TABLE temp_events (
+    id SERIAL PRIMARY KEY,
     name VARCHAR(255),
     date TIMESTAMP,
     city_code INTEGER,
@@ -178,10 +185,10 @@ CREATE TEMP TABLE temp_events (
     status VARCHAR(255)
 );
 
-\copy temp_events(name, date, city_code, organizer_id, capacity, ticket_price, status) from './CSV/events.csv' WITH DELIMITER ',' CSV HEADER;
+\copy temp_events(id, name, date, city_code, organizer_id, capacity, ticket_price, status) from './CSV/events.csv' WITH DELIMITER ',' CSV HEADER;
 
-INSERT INTO Events (name, date, city_code, organizer_id, capacity, ticket_price, status)
-SELECT name, date, city_code, organizer_id, capacity, ticket_price, status FROM temp_events;
+INSERT INTO Events (id, name, date, city_code, organizer_id, capacity, ticket_price, status)
+SELECT id, name, date, city_code, organizer_id, capacity, ticket_price, status FROM temp_events;
 
 DROP TABLE IF EXISTS temp_events;
 
@@ -201,40 +208,43 @@ DROP TABLE IF EXISTS temp_participation;
 
 -- Import des données pour Genres
 CREATE TEMP TABLE temp_genres (
+    id SERIAL PRIMARY KEY,
     name VARCHAR(255),
     parent_genre_id INTEGER
 );
 
-\copy temp_genres(name, parent_genre_id) from './CSV/genres.csv' WITH DELIMITER ',' CSV HEADER;
+\copy temp_genres(id, name, parent_genre_id) from './CSV/genres.csv' WITH DELIMITER ',' CSV HEADER;
 
-INSERT INTO Genres (name, parent_genre_id)
-SELECT name, parent_genre_id FROM temp_genres;
+INSERT INTO Genres (id, name, parent_genre_id)
+SELECT id, name, parent_genre_id FROM temp_genres;
 
 DROP TABLE IF EXISTS temp_genres;
 
 -- Import des données pour Studios
 CREATE TEMP TABLE temp_studios (
+    id SERIAL PRIMARY KEY,
     name VARCHAR(255)
 );
 
-\copy temp_studios(name) from './CSV/studios.csv' WITH DELIMITER ',' CSV HEADER;
+\copy temp_studios(id, name) from './CSV/studios.csv' WITH DELIMITER ',' CSV HEADER;
 
-INSERT INTO Studios (name)
-SELECT name FROM temp_studios;
+INSERT INTO Studios (id, name)
+SELECT id, name FROM temp_studios;
 
 DROP TABLE IF EXISTS temp_studios;
 
 -- Import des données pour Movies
 CREATE TEMP TABLE temp_movies (
+    id SERIAL PRIMARY KEY,
     title VARCHAR(255),
     duration INTEGER,
     release_date DATE
 );
 
-\copy temp_movies(title, duration, release_date) from './CSV/movies.csv' WITH DELIMITER ',' CSV HEADER;
+\copy temp_movies(id, title, duration, release_date) from './CSV/movies.csv' WITH DELIMITER ',' CSV HEADER;
 
-INSERT INTO Movies (title, duration, release_date)
-SELECT title, duration, release_date FROM temp_movies;
+INSERT INTO Movies (id, title, duration, release_date)
+SELECT id, title, duration, release_date FROM temp_movies;
 
 DROP TABLE IF EXISTS temp_movies;
 
@@ -266,41 +276,43 @@ DROP TABLE IF EXISTS temp_moviestudios;
 
 -- Import des données pour People
 CREATE TEMP TABLE temp_people (
+    id SERIAL PRIMARY KEY,
     last_name VARCHAR(255),
     first_name VARCHAR(255),
     birth_date DATE
 );
 
-\copy temp_people(last_name, first_name, birth_date) from './CSV/people.csv' WITH DELIMITER ',' CSV HEADER;
+\copy temp_people(id, last_name, first_name, birth_date) from './CSV/people.csv' WITH DELIMITER ',' CSV HEADER;
 
-INSERT INTO People (last_name, first_name, birth_date)
-SELECT last_name, first_name, birth_date FROM temp_people;
+INSERT INTO People (id, last_name, first_name, birth_date)
+SELECT id, last_name, first_name, birth_date FROM temp_people;
 
 DROP TABLE IF EXISTS temp_people;
 
 -- Import des données pour PeopleRoles
 CREATE TEMP TABLE temp_peopleroles (
+    id SERIAL PRIMARY KEY,
     name VARCHAR(255)
 );
 
-\copy temp_peopleroles(name) from './CSV/peopleroles.csv' WITH DELIMITER ',' CSV HEADER;
+\copy temp_peopleroles(id, name) from './CSV/peopleroles.csv' WITH DELIMITER ',' CSV HEADER;
 
-INSERT INTO PeopleRoles (name)
-SELECT name FROM temp_peopleroles;
+INSERT INTO PeopleRoles (id, name)
+SELECT id, name FROM temp_peopleroles;
 
 DROP TABLE IF EXISTS temp_peopleroles;
 
 -- Import des données pour MovieCollaborators
 CREATE TEMP TABLE temp_moviecollaborators (
-    movie_id INTEGER,
     people_id INTEGER,
+    movie_id INTEGER,
     role_id INTEGER
 );
 
-\copy temp_moviecollaborators(movie_id, people_id, role_id) from './CSV/moviecollaborators.csv' WITH DELIMITER ',' CSV HEADER;
+\copy temp_moviecollaborators(people_id, movie_id, role_id) from './CSV/moviecollaborators.csv' WITH DELIMITER ',' CSV HEADER;
 
-INSERT INTO MovieCollaborators (movie_id, people_id, role_id)
-SELECT movie_id, people_id, role_id FROM temp_moviecollaborators;
+INSERT INTO MovieCollaborators (people_id, movie_id, role_id)
+SELECT people_id, movie_id, role_id FROM temp_moviecollaborators;
 
 DROP TABLE IF EXISTS temp_moviecollaborators;
 
@@ -345,31 +357,3 @@ INSERT INTO UserMovieRatings (user_id, movie_id, rating)
 SELECT user_id, movie_id, rating FROM temp_usermovieratings;
 
 DROP TABLE IF EXISTS temp_usermovieratings;
-
--- Import des données pour MovieRecommendation
-CREATE TEMP TABLE temp_movierecommendation (
-    user_id INTEGER,
-    movie_id INTEGER,
-    score_recommendation FLOAT
-);
-
-\copy temp_movierecommendation(user_id, movie_id, score_recommendation) from './CSV/movierecommendation.csv' WITH DELIMITER ',' CSV HEADER;
-
-INSERT INTO MovieRecommendation (user_id, movie_id, score_recommendation)
-SELECT user_id, movie_id, score_recommendation FROM temp_movierecommendation;
-
-DROP TABLE IF EXISTS temp_movierecommendation;
-
--- Import des données pour EventRecommendation
-CREATE TEMP TABLE temp_eventrecommendation (
-    user_id INTEGER,
-    event_id INTEGER,
-    score_recommendation FLOAT
-);
-
-\copy temp_eventrecommendation(user_id, event_id, score_recommendation) from './CSV/eventrecommendation.csv' WITH DELIMITER ',' CSV HEADER;
-
-INSERT INTO EventRecommendation (user_id, event_id, score_recommendation)
-SELECT user_id, event_id, score_recommendation FROM temp_eventrecommendation;
-
-DROP TABLE IF EXISTS temp_eventrecommendation;
