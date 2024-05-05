@@ -17,3 +17,4 @@ Après avoir accédé au shell postgres, exécutez les commandes suivantes pour 
 
 ### Erreurs sur le diagramme ER
 - La table `Genre` ne devrait pas avoir d'attribut de date de sortie (mauvaise indication sur le diagramme)
+- La table `Person` ne contient uniquement le nom entier de la personne (pas de prénom, nom de famille, etc.)
