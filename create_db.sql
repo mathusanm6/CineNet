@@ -114,6 +114,13 @@ CREATE TABLE
 
 DROP TABLE IF EXISTS Reactions CASCADE;
 
+-- Reactions : 
+-- Excellent -> "😄", 
+-- Good -> "🙂", 
+-- Average -> "😐,  
+-- "Poor -> "🙁", 
+-- Terrible -> "😩"
+
 CREATE TABLE
     Reactions (
         user_id INTEGER NOT NULL REFERENCES Users (id),
@@ -266,4 +273,15 @@ CREATE TABLE
         event_id INTEGER NOT NULL REFERENCES Events (id),
         score_recommendation NUMERIC NOT NULL,
         PRIMARY KEY (user_id, event_id)
+    );
+
+-- Recommendations based on post reactions
+DROP TABLE IF EXISTS PostRecommendation CASCADE;
+
+CREATE TABLE
+    PostRecommendation (
+        user_id INTEGER NOT NULL REFERENCES Users (id),
+        post_id INTEGER NOT NULL REFERENCES Posts (id),
+        score_recommendation NUMERIC NOT NULL,
+        PRIMARY KEY (user_id, post_id)
     );

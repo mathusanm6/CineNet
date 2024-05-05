@@ -20,7 +20,7 @@ SELECT
     a.event_id AS event_id1,
     b.event_id AS event_id2,
     (
-        SUM(a.rating * b.rating) / (SQRT(SUM(a.rating ^ 2)) * SQRT(SUM(b.rating ^ 2)))
+        SUM(a.rating * b.rating) / (SQRT(SUM(POWER(a.rating, 2))) * SQRT(SUM(POWER(b.rating, 2))))
     ) AS similarity
 FROM
     UserEventRatings a
