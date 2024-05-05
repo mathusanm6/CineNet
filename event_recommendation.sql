@@ -30,9 +30,8 @@ GROUP BY
     a.event_id,
     b.event_id
 HAVING
-    COUNT(a.user_id) > 1;
+    COUNT(a.user_id) > 1; -- Ensure there is enough user overlap for meaningful similarity
 
--- Ensure there is enough user overlap for meaningful similarity
 -- Drop temporary table if it exists
 DROP TABLE IF EXISTS EventRecommendationTemp;
 
@@ -65,7 +64,8 @@ SELECT
     event_id,
     score_recommendation
 FROM
-    EventRecommendationTemp ON CONFLICT (user_id, event_id) DO
+    EventRecommendationTemp 
+    ON CONFLICT (user_id, event_id) DO
 UPDATE
 SET
     score_recommendation = EXCLUDED.score_recommendation;
