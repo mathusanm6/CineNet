@@ -122,7 +122,7 @@ for i, row in df_movies.iterrows():
     if director_ids.size > 0:
         director_id = director_ids[0]
         director_df = pd.DataFrame(
-            [{"people_id": director_id, "movie_id": movie_id, "role_id": 2}]
+            [{"people_id": director_id, "movie_id": movie_id, "role_id": 1}]
         )
         movie_collaborators = pd.concat(
             [movie_collaborators, director_df], ignore_index=True
@@ -133,7 +133,7 @@ for i, row in df_movies.iterrows():
         if actor_ids.size > 0:
             actor_id = actor_ids[0]
             actor_df = pd.DataFrame(
-                [{"people_id": actor_id, "movie_id": movie_id, "role_id": 1}]
+                [{"people_id": actor_id, "movie_id": movie_id, "role_id": 2}]
             )
             movie_collaborators = pd.concat(
                 [movie_collaborators, actor_df], ignore_index=True
