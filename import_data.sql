@@ -1,11 +1,13 @@
+-- Set the search path to our cine_net schema
+SET search_path TO cine_net;
+
 -- Import des données pour UserRoles
 CREATE TEMP TABLE temp_userroles (
     name VARCHAR(255),
     description TEXT
 );
 
-COPY temp_userroles(name, description)
-FROM '/home/raoul/BD6/ProjetBD6/CSV/userroles.csv' CSV HEADER;
+\copy temp_userroles(name, description) from './CSV/userroles.csv' WITH DELIMITER ',' CSV HEADER;
 
 INSERT INTO UserRoles (name, description)
 SELECT name, description FROM temp_userroles;
@@ -23,8 +25,7 @@ CREATE TEMP TABLE temp_users (
     role_type INTEGER
 );
 
-COPY temp_users(last_name, first_name, username, email, password, birth_date, role_type)
-FROM '/home/raoul/BD6/ProjetBD6/CSV/users.csv' CSV HEADER;
+\copy temp_users(last_name, first_name, username, email, password, birth_date, role_type) from './CSV/users.csv' WITH DELIMITER ',' CSV HEADER;
 
 INSERT INTO Users (last_name, first_name, username, email, password, birth_date, role_type)
 SELECT last_name, first_name, username, email, password, birth_date, role_type FROM temp_users;
@@ -37,8 +38,7 @@ CREATE TEMP TABLE temp_countries (
     name VARCHAR(255)
 );
 
-COPY temp_countries(country_code, name)
-FROM '/home/raoul/BD6/ProjetBD6/CSV/countries.csv' CSV HEADER;
+\copy temp_countries(country_code, name) from './CSV/countries.csv' WITH DELIMITER ',' CSV HEADER;
 
 INSERT INTO Countries (country_code, name)
 SELECT country_code, name FROM temp_countries;
@@ -51,8 +51,7 @@ CREATE TEMP TABLE temp_cities (
     country_code CHAR(3)
 );
 
-COPY temp_cities(name, country_code)
-FROM '/home/raoul/BD6/ProjetBD6/CSV/cities.csv' CSV HEADER;
+\copy temp_cities(name, country_code) from './CSV/cities.csv' WITH DELIMITER ',' CSV HEADER;
 
 INSERT INTO Cities (name, country_code)
 SELECT name, country_code FROM temp_cities;
@@ -65,8 +64,7 @@ CREATE TEMP TABLE temp_userlocation (
     city_code INTEGER
 );
 
-COPY temp_userlocation(user_id, city_code)
-FROM '/home/raoul/BD6/ProjetBD6/CSV/userlocation.csv' CSV HEADER;
+\copy temp_userlocation(user_id, city_code) from './CSV/userlocation.csv' WITH DELIMITER ',' CSV HEADER;
 
 INSERT INTO UserLocation (user_id, city_code)
 SELECT user_id, city_code FROM temp_userlocation;
@@ -80,8 +78,7 @@ CREATE TEMP TABLE temp_friendship (
     date TIMESTAMP
 );
 
-COPY temp_friendship(initiator_id, recipient_id, date)
-FROM '/home/raoul/BD6/ProjetBD6/CSV/friendship.csv' CSV HEADER;
+\copy temp_friendship(initiator_id, recipient_id, date) from './CSV/friendship.csv' WITH DELIMITER ',' CSV HEADER;
 
 INSERT INTO Friendship (initiator_id, recipient_id, date)
 SELECT initiator_id, recipient_id, date FROM temp_friendship;
@@ -95,8 +92,7 @@ CREATE TEMP TABLE temp_following (
     date TIMESTAMP
 );
 
-COPY temp_following(follower_id, followed_id, date)
-FROM '/home/raoul/BD6/ProjetBD6/CSV/following.csv' CSV HEADER;
+\copy temp_following(follower_id, followed_id, date) from './CSV/following.csv' WITH DELIMITER ',' CSV HEADER;
 
 INSERT INTO Following (follower_id, followed_id, date)
 SELECT follower_id, followed_id, date FROM temp_following;
@@ -109,8 +105,7 @@ CREATE TEMP TABLE temp_categories (
     description TEXT
 );
 
-COPY temp_categories(name, description)
-FROM '/home/raoul/BD6/ProjetBD6/CSV/categories.csv' CSV HEADER;
+\copy temp_categories(name, description) from './CSV/categories.csv' WITH DELIMITER ',' CSV HEADER;
 
 INSERT INTO Categories (name, description)
 SELECT name, description FROM temp_categories;
@@ -126,8 +121,7 @@ CREATE TEMP TABLE temp_posts (
     category_id INTEGER
 );
 
-COPY temp_posts(user_id, date, content, parent_post_id, category_id)
-FROM '/home/raoul/BD6/ProjetBD6/CSV/posts.csv' CSV HEADER;
+\copy temp_posts(user_id, date, content, parent_post_id, category_id) from './CSV/posts.csv' WITH DELIMITER ',' CSV HEADER;
 
 INSERT INTO Posts (user_id, date, content, parent_post_id, category_id)
 SELECT user_id, date, content, parent_post_id, category_id FROM temp_posts;
@@ -139,8 +133,7 @@ CREATE TEMP TABLE temp_tags (
     name VARCHAR(255)
 );
 
-COPY temp_tags(name)
-FROM '/home/raoul/BD6/ProjetBD6/CSV/tags.csv' CSV HEADER;
+\copy temp_tags(name) from './CSV/tags.csv' WITH DELIMITER ',' CSV HEADER;
 
 INSERT INTO Tags (name)
 SELECT name FROM temp_tags;
@@ -153,8 +146,7 @@ CREATE TEMP TABLE temp_posttags (
     post_id INTEGER
 );
 
-COPY temp_posttags(tag_id, post_id)
-FROM '/home/raoul/BD6/ProjetBD6/CSV/posttags.csv' CSV HEADER;
+\copy temp_posttags(tag_id, post_id) from './CSV/posttags.csv' WITH DELIMITER ',' CSV HEADER;
 
 INSERT INTO PostTags (tag_id, post_id)
 SELECT tag_id, post_id FROM temp_posttags;
@@ -168,8 +160,7 @@ CREATE TEMP TABLE temp_reactions (
     emoji VARCHAR(10)
 );
 
-COPY temp_reactions(user_id, post_id, emoji)
-FROM '/home/raoul/BD6/ProjetBD6/CSV/reactions.csv' CSV HEADER;
+\copy temp_reactions(user_id, post_id, emoji) from './CSV/reactions.csv' WITH DELIMITER ',' CSV HEADER;
 
 INSERT INTO Reactions (user_id, post_id, emoji)
 SELECT user_id, post_id, emoji FROM temp_reactions;
@@ -187,8 +178,7 @@ CREATE TEMP TABLE temp_events (
     status VARCHAR(255)
 );
 
-COPY temp_events(name, date, city_code, organizer_id, capacity, ticket_price, status)
-FROM '/home/raoul/BD6/ProjetBD6/CSV/events.csv' CSV HEADER;
+\copy temp_events(name, date, city_code, organizer_id, capacity, ticket_price, status) from './CSV/events.csv' WITH DELIMITER ',' CSV HEADER;
 
 INSERT INTO Events (name, date, city_code, organizer_id, capacity, ticket_price, status)
 SELECT name, date, city_code, organizer_id, capacity, ticket_price, status FROM temp_events;
@@ -202,8 +192,7 @@ CREATE TEMP TABLE temp_participation (
     type_participation VARCHAR(255)
 );
 
-COPY temp_participation(user_id, event_id, type_participation)
-FROM '/home/raoul/BD6/ProjetBD6/CSV/participation.csv' CSV HEADER;
+\copy temp_participation(user_id, event_id, type_participation) from './CSV/participation.csv' WITH DELIMITER ',' CSV HEADER;
 
 INSERT INTO Participation (user_id, event_id, type_participation)
 SELECT user_id, event_id, type_participation FROM temp_participation;
@@ -216,8 +205,7 @@ CREATE TEMP TABLE temp_genres (
     parent_genre_id INTEGER
 );
 
-COPY temp_genres(name, parent_genre_id)
-FROM '/home/raoul/BD6/ProjetBD6/CSV/genres.csv' CSV HEADER;
+\copy temp_genres(name, parent_genre_id) from './CSV/genres.csv' WITH DELIMITER ',' CSV HEADER;
 
 INSERT INTO Genres (name, parent_genre_id)
 SELECT name, parent_genre_id FROM temp_genres;
@@ -229,8 +217,7 @@ CREATE TEMP TABLE temp_studios (
     name VARCHAR(255)
 );
 
-COPY temp_studios(name)
-FROM '/home/raoul/BD6/ProjetBD6/CSV/studios.csv' CSV HEADER;
+\copy temp_studios(name) from './CSV/studios.csv' WITH DELIMITER ',' CSV HEADER;
 
 INSERT INTO Studios (name)
 SELECT name FROM temp_studios;
@@ -244,8 +231,7 @@ CREATE TEMP TABLE temp_movies (
     release_date DATE
 );
 
-COPY temp_movies(title, duration, release_date)
-FROM '/home/raoul/BD6/ProjetBD6/CSV/movies.csv' CSV HEADER;
+\copy temp_movies(title, duration, release_date) from './CSV/movies.csv' WITH DELIMITER ',' CSV HEADER;
 
 INSERT INTO Movies (title, duration, release_date)
 SELECT title, duration, release_date FROM temp_movies;
@@ -258,8 +244,7 @@ CREATE TEMP TABLE temp_moviegenres (
     genre_id INTEGER
 );
 
-COPY temp_moviegenres(movie_id, genre_id)
-FROM '/home/raoul/BD6/ProjetBD6/CSV/moviegenres.csv' CSV HEADER;
+\copy temp_moviegenres(movie_id, genre_id) from './CSV/moviegenres.csv' WITH DELIMITER ',' CSV HEADER;
 
 INSERT INTO MovieGenres (movie_id, genre_id)
 SELECT movie_id, genre_id FROM temp_moviegenres;
@@ -272,8 +257,7 @@ CREATE TEMP TABLE temp_moviestudios (
     studio_id INTEGER
 );
 
-COPY temp_moviestudios(movie_id, studio_id)
-FROM '/home/raoul/BD6/ProjetBD6/CSV/moviestudios.csv' CSV HEADER;
+\copy temp_moviestudios(movie_id, studio_id) from './CSV/moviestudios.csv' WITH DELIMITER ',' CSV HEADER;
 
 INSERT INTO MovieStudios (movie_id, studio_id)
 SELECT movie_id, studio_id FROM temp_moviestudios;
@@ -287,8 +271,7 @@ CREATE TEMP TABLE temp_people (
     birth_date DATE
 );
 
-COPY temp_people(last_name, first_name, birth_date)
-FROM '/home/raoul/BD6/ProjetBD6/CSV/people.csv' CSV HEADER;
+\copy temp_people(last_name, first_name, birth_date) from './CSV/people.csv' WITH DELIMITER ',' CSV HEADER;
 
 INSERT INTO People (last_name, first_name, birth_date)
 SELECT last_name, first_name, birth_date FROM temp_people;
@@ -300,8 +283,7 @@ CREATE TEMP TABLE temp_peopleroles (
     name VARCHAR(255)
 );
 
-COPY temp_peopleroles(name)
-FROM '/home/raoul/BD6/ProjetBD6/CSV/peopleroles.csv' CSV HEADER;
+\copy temp_peopleroles(name) from './CSV/peopleroles.csv' WITH DELIMITER ',' CSV HEADER;
 
 INSERT INTO PeopleRoles (name)
 SELECT name FROM temp_peopleroles;
@@ -315,13 +297,26 @@ CREATE TEMP TABLE temp_moviecollaborators (
     role_id INTEGER
 );
 
-COPY temp_moviecollaborators(movie_id, people_id, role_id)
-FROM '/home/raoul/BD6/ProjetBD6/CSV/moviecollaborators.csv' CSV HEADER;
+\copy temp_moviecollaborators(movie_id, people_id, role_id) from './CSV/moviecollaborators.csv' WITH DELIMITER ',' CSV HEADER;
 
 INSERT INTO MovieCollaborators (movie_id, people_id, role_id)
 SELECT movie_id, people_id, role_id FROM temp_moviecollaborators;
 
 DROP TABLE IF EXISTS temp_moviecollaborators;
+
+-- Import des données pour Screenings
+CREATE TEMP TABLE temp_screenings (
+    event_id INTEGER,
+    movie_id INTEGER,
+    screening_time TIMESTAMP
+);
+
+\copy temp_screenings(event_id, movie_id, screening_time) from './CSV/screenings.csv' WITH DELIMITER ',' CSV HEADER;
+
+INSERT INTO Screenings (event_id, movie_id, screening_time)
+SELECT event_id, movie_id, screening_time FROM temp_screenings;
+
+DROP TABLE IF EXISTS temp_screenings;
 
 -- Import des données pour UserEventRatings
 CREATE TEMP TABLE temp_usereventratings (
@@ -330,8 +325,7 @@ CREATE TEMP TABLE temp_usereventratings (
     rating INTEGER
 );
 
-COPY temp_usereventratings(user_id, event_id, rating)
-FROM '/home/raoul/BD6/ProjetBD6/CSV/usereventratings.csv' CSV HEADER;
+\copy temp_usereventratings(user_id, event_id, rating) from './CSV/usereventratings.csv' WITH DELIMITER ',' CSV HEADER;
 
 INSERT INTO UserEventRatings (user_id, event_id, rating)
 SELECT user_id, event_id, rating FROM temp_usereventratings;
@@ -345,8 +339,7 @@ CREATE TEMP TABLE temp_usermovieratings (
     rating INTEGER
 );
 
-COPY temp_usermovieratings(user_id, movie_id, rating)
-FROM '/home/raoul/BD6/ProjetBD6/CSV/usermovieratings.csv' CSV HEADER;
+\copy temp_usermovieratings(user_id, movie_id, rating) from './CSV/usermovieratings.csv' WITH DELIMITER ',' CSV HEADER;
 
 INSERT INTO UserMovieRatings (user_id, movie_id, rating)
 SELECT user_id, movie_id, rating FROM temp_usermovieratings;
@@ -360,8 +353,7 @@ CREATE TEMP TABLE temp_movierecommendation (
     score_recommendation FLOAT
 );
 
-COPY temp_movierecommendation(user_id, movie_id, score_recommendation)
-FROM '/home/raoul/BD6/ProjetBD6/CSV/movierecommendation.csv' CSV HEADER;
+\copy temp_movierecommendation(user_id, movie_id, score_recommendation) from './CSV/movierecommendation.csv' WITH DELIMITER ',' CSV HEADER;
 
 INSERT INTO MovieRecommendation (user_id, movie_id, score_recommendation)
 SELECT user_id, movie_id, score_recommendation FROM temp_movierecommendation;
@@ -375,8 +367,7 @@ CREATE TEMP TABLE temp_eventrecommendation (
     score_recommendation FLOAT
 );
 
-COPY temp_eventrecommendation(user_id, event_id, score_recommendation)
-FROM '/home/raoul/BD6/ProjetBD6/CSV/eventrecommendation.csv' CSV HEADER;
+\copy temp_eventrecommendation(user_id, event_id, score_recommendation) from './CSV/eventrecommendation.csv' WITH DELIMITER ',' CSV HEADER;
 
 INSERT INTO EventRecommendation (user_id, event_id, score_recommendation)
 SELECT user_id, event_id, score_recommendation FROM temp_eventrecommendation;
