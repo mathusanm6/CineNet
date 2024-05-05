@@ -150,17 +150,6 @@ CREATE TABLE
         PRIMARY KEY (user_id, event_id)
     );
 
-DROP TABLE IF EXISTS Screenings CASCADE;
-
-CREATE TABLE
-    Screenings (
-        id SERIAL PRIMARY KEY,
-        event_id INTEGER NOT NULL REFERENCES Events (id),
-        movie_id INTEGER NOT NULL REFERENCES Movies (id),
-        screening_time TIMESTAMP NOT NULL,
-        PRIMARY KEY (event_id, movie_id)
-    );
-
 -- Movies, genres, and collaborators
 DROP TABLE IF EXISTS Genres CASCADE;
 
@@ -227,6 +216,16 @@ CREATE TABLE
         movie_id INTEGER NOT NULL REFERENCES Movies (id),
         role_id INTEGER NOT NULL REFERENCES PeopleRoles (id),
         PRIMARY KEY (people_id, movie_id, role_id)
+    );
+
+DROP TABLE IF EXISTS Screenings CASCADE;
+
+CREATE TABLE
+    Screenings (
+        event_id INTEGER NOT NULL REFERENCES Events (id),
+        movie_id INTEGER NOT NULL REFERENCES Movies (id),
+        screening_time TIMESTAMP NOT NULL,
+        PRIMARY KEY (event_id, movie_id)
     );
 
 -- Ratings and recommendations
