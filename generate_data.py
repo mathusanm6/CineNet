@@ -80,7 +80,9 @@ genres["parent_genre_id"] = np.random.choice([None] + list(genres["id"]), len(ge
 # Create movie-genre links
 movie_genres = df_movies["Genre"].str.split(",").explode().reset_index()
 movie_genres["genre_id"] = movie_genres["Genre"].map(genres.set_index("name")["id"])
-movie_genres["movie_id"] = movie_genres["index"] + 1  # Adjust this to align with movie IDs
+movie_genres["movie_id"] = (
+    movie_genres["index"] + 1
+)  # Adjust this to align with movie IDs
 movie_genres = movie_genres[["movie_id", "genre_id"]]
 movie_genres.drop_duplicates(inplace=True)
 
@@ -104,16 +106,15 @@ people["date_of_birth"] = fake.date_of_birth(minimum_age=18, maximum_age=70).iso
 people = people[["id", "name", "date_of_birth"]]
 
 # Create people-roles links
-people_roles = pd.DataFrame({
-    "id": [1, 2],
-    "name": ["Director", "Actor"]
-})
+people_roles = pd.DataFrame({"id": [1, 2], "name": ["Director", "Actor"]})
 
 # Create movie-collaborators DataFrame
 movie_collaborators = pd.DataFrame(columns=["people_id", "movie_id", "role_id"])
 
 # Remove rows where movie_id is not in the movies DataFrame
-movie_collaborators = movie_collaborators[movie_collaborators["movie_id"].isin(movies["id"])]
+movie_collaborators = movie_collaborators[
+    movie_collaborators["movie_id"].isin(movies["id"])
+]
 
 for i, row in df_movies.iterrows():
     movie_id = i + 1
@@ -335,7 +336,14 @@ while mask.any():
 events = pd.DataFrame(
     {
         "id": range(1, n_events + 1),
-        "name": [fake.sentence(nb_words=4) for _ in range(n_events)],
+        "name": [
+            np.random.choice(
+                ["Event", "Festival", "Screening", "Concert", "Exhibition"]
+            )
+            + " "
+            + fake.word()
+            for _ in range(n_events)
+        ],
         "date": [
             fake.future_date(end_date="+30d").isoformat() + "T" + fake.time()
             for _ in range(n_events)
