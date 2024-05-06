@@ -22,9 +22,11 @@ echo
 # Set the database name
 DATABASE_NAME="cinenetdb"
 
+folder_path=$1
+
 # Call psql with the SQL file and pass parameters correctly
 echo "Searching for average popularity score..."
-psql -d "$DATABASE_NAME" -f average_popularity_score_tool.sql
+psql -d "$DATABASE_NAME" -f "$folder_path/average_popularity_score_tool.sql"
 
 # Success message
 echo -e "${GREEN}Search completed. Check the output above for results.${NC}"

@@ -45,9 +45,11 @@ while [[ -z "$country_name" ]]; do
     fi
 done
 
+folder_path=$1
+
 # Call psql with the SQL file and pass parameters correctly
 echo "Searching for events..."
-psql -d "$DATABASE_NAME" -v eventname="'$event_name'" -v countryname="'$country_name'" -f event_search_tool.sql
+psql -d "$DATABASE_NAME" -v eventname="'$event_name'" -v countryname="'$country_name'" -f "$folder_path/event_search_tool.sql"
 
 # Success message
 echo -e "${GREEN}Search completed. Check the output above for results.${NC}"

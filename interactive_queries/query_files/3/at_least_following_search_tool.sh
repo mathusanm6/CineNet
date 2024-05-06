@@ -37,9 +37,11 @@ while [[ -z "$min_following_count" ]]; do
     fi
 done
 
+folder_path=$1
+
 # Call psql with the SQL file and pass parameters correctly
 echo "Searching for users..."
-psql -d "$DATABASE_NAME" -v minfollowingcount="'$min_following_count'" -f at_least_following_search_tool.sql
+psql -d "$DATABASE_NAME" -v minfollowingcount="'$min_following_count'" -f "$folder_path/at_least_following_search_tool.sql"
 
 # Success message
 echo -e "${GREEN}Search completed. Check the output above for results.${NC}"
