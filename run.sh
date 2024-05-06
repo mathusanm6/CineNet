@@ -36,6 +36,13 @@ function run_init_recommendation() {
     ./init_recommendation.sh "$show_output"
 }
 
+# Function to run interactive queries
+function run_interactive_queries() {
+    echo -e "$(get_color_code "blue")Running interactive_queries.sh$(get_color_code "reset")"
+    chmod +x interactive_queries/interactive_queries.sh
+    ./interactive_queries/interactive_queries.sh "interactive_queries"
+}
+
 function print_usage() {
     # Define color codes
     local color_reset="\033[0m"
@@ -50,11 +57,13 @@ function print_usage() {
     echo -e "  ${color_options}3${color_reset} - To run only ${color_command}import_data.sh${color_reset}"
     echo -e "  ${color_options}4${color_reset} - To run only ${color_command}init_recommendation.sh${color_reset}"
     echo -e "  ${color_options}all${color_reset} - To run ${color_command}create_db.sh${color_reset}, ${color_command}generate_csv.py${color_reset}, ${color_command}import_data.sh${color_reset}, and then execute ${color_command}init_recommendation.sh${color_reset}"
+    echo -e "  ${color_options}interactive${color_reset} - To run the interactive_queries.sh script"
     echo -e "${color_example}Examples:${color_reset} $0 1 yes - Just creates the database and show PostgreSQL output"
     echo -e "          $0 2 no - Only runs generate_csv.py and do not show PostgreSQL output"
     echo -e "          $0 3 yes - Only runs import_data.sh and show PostgreSQL output"
     echo -e "          $0 4 no - Only runs init_recommendation.sh and do not show PostgreSQL output"
     echo -e "          $0 all yes - Runs all scripts in sequence and show PostgreSQL output"
+    echo -e "          $0 interactive - Runs in interactive mode"
 }
 
 function clear_terminal() {
@@ -63,7 +72,7 @@ function clear_terminal() {
 }
 
 # Check command line arguments to determine which scripts to run
-if [[ "$#" -lt 2 ]]; then
+if [[ "$#" -lt 1 ]]; then
     echo "Error: Insufficient arguments provided."
     print_usage
     exit 1
@@ -94,6 +103,10 @@ all)
     run_generate_csv
     run_import_data "$show_output"
     run_init_recommendation "$show_output"
+    ;;
+interactive)
+    clear_terminal
+    run_interactive_queries
     ;;
 *)
     echo "Invalid option: $1"

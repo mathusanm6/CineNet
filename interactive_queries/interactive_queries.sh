@@ -39,10 +39,11 @@ ensure_executable() {
 run_script() {
     local script_name=$1
     local folder_path=$2
-    local script_path="query_files/$folder_path/$script_name"
+    local super_folder_path=$3
+    local script_path="$super_folder_path/query_files/$folder_path/$script_name"
     ensure_executable "$script_path"
     echo -e "$(get_color_code "blue")Running $script_name...$(get_color_code "reset")"
-    bash "$script_path" "query_files/$folder_path"
+    bash "$script_path" "$super_folder_path/query_files/$folder_path"
 }
 
 # Display menu
@@ -57,6 +58,8 @@ display_menu() {
     echo -e "$(get_color_code "red")Q) Quit$(get_color_code "reset")"
 }
 
+super_folder_path=$1
+
 # Main function
 main() {
     local cont="y"
@@ -65,19 +68,19 @@ main() {
         read -p "$(get_color_code "yellow")Enter your choice (1-5, Q): $(get_color_code "reset")" choice
         case $choice in
         1)
-            run_script "event_search_tool.sh" "1"
+            run_script "event_search_tool.sh" "1" "$super_folder_path"
             ;;
         2)
-            run_script "follower_search_tool.sh" "2"
+            run_script "follower_search_tool.sh" "2" "$super_folder_path"
             ;;
         3)
-            run_script "at_least_following_search_tool.sh" "3"
+            run_script "at_least_following_search_tool.sh" "3" "$super_folder_path"
             ;;
         4)
-            run_script "average_popularity_score_tool.sh" "4"
+            run_script "average_popularity_score_tool.sh" "4" "$super_folder_path"
             ;;
         5)
-            run_script "user_post_after_date_search_tool.sh" "5"
+            run_script "user_post_after_date_search_tool.sh" "5" "$super_folder_path"
             ;;
         [Qq])
             echo -e "$(get_color_code "green")Exiting...$(get_color_code "reset")"

@@ -11,8 +11,11 @@ Pour utiliser le programme CineNet, lancez le script bash `run.sh` à la racine 
 - **3** : Pour exécuter uniquement le script `import_data.sh`, qui importe les données depuis les fichiers CSV dans la base de données.
 - **4** : Pour exécuter uniquement le script `init_recommendation.sh`, qui initialise le système de recommandation.
 - **all** : Pour exécuter tous les scripts dans l'ordre : `create_db.sh`, `generate_csv.py`, `import_data.sh`, et enfin `init_recommendation.sh`.
+- **interactive** : Pour lancer une session interactive de requêtes SQL sur la base de données.
 
-Chaque commande peut être suivie de `yes` pour afficher les sorties de la base de données PostgreSQL, ou `no` pour ne pas les afficher.
+Chaque commande sauft `interactive` prend un argument supplémentaire pour contrôler l'affichage des détails de sortie. Les options sont :
+- **yes** : Pour afficher les détails de sortie de PostgreSQL.
+- **no** : Pour ne pas afficher les détails de sortie de PostgreSQL.
 
 #### Exemples d'utilisation :
 
@@ -22,6 +25,7 @@ $ ./run.sh 2 no   # Exécute uniquement generate_csv.py sans afficher les sortie
 $ ./run.sh 3 yes  # Exécute seulement import_data.sh et affiche les sorties de PostgreSQL
 $ ./run.sh 4 no   # Démarre uniquement init_recommendation.sh sans afficher les sorties de PostgreSQL
 $ ./run.sh all yes  # Exécute tous les scripts en séquence et affiche les sorties de PostgreSQL
+$ ./run.sh interactive  # Démarre une session interactive de requêtes SQL
 ```
 
 ### Erreurs sur le diagramme ER
