@@ -18,8 +18,14 @@ Après avoir accédé au shell postgres, exécutez les commandes suivantes pour 
 
 ```sql
 \i movie_recommendation.sql
-\i event_recommendation.sql
+\i completed_event_recommendation.sql
 \i post_recommendation.sql
+```
+
+Seulement après avoir exécuté `movie_recommendation.sql`, exécutez la commande suivante pour préparer les recommandations d'événements planifiés :
+
+```sql
+\i scheduled_event_recommendation.sql
 ```
 
 ### Erreurs sur le diagramme ER

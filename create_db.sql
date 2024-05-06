@@ -143,7 +143,7 @@ CREATE TABLE
         ticket_price NUMERIC NOT NULL
     );
 
--- Enabling different event types (UpcomingEvents, ArchivedEvents)
+-- Enabling different event types (Scheduled, Completed, Cancelled)
 ALTER TABLE Events
 ADD COLUMN status VARCHAR(255) NOT NULL;
 
@@ -265,17 +265,26 @@ CREATE TABLE
         PRIMARY KEY (user_id, movie_id)
     );
 
-DROP TABLE IF EXISTS EventRecommendation CASCADE;
+DROP TABLE IF EXISTS CompletedEventRecommendation CASCADE;
 
 CREATE TABLE
-    EventRecommendation (
+    CompletedEventRecommendation (
         user_id INTEGER NOT NULL REFERENCES Users (id),
         event_id INTEGER NOT NULL REFERENCES Events (id),
         score_recommendation NUMERIC NOT NULL,
         PRIMARY KEY (user_id, event_id)
     );
 
--- Recommendations based on post reactions
+DROP TABLE IF EXISTS ScheduledEventRecommendation CASCADE;
+
+CREATE TABLE
+    ScheduledEventRecommendation (
+        user_id INTEGER NOT NULL REFERENCES Users (id),
+        event_id INTEGER NOT NULL REFERENCES Events (id),
+        score_recommendation NUMERIC NOT NULL,
+        PRIMARY KEY (user_id, event_id)
+    );
+
 DROP TABLE IF EXISTS PostRecommendation CASCADE;
 
 CREATE TABLE
