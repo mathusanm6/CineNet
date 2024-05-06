@@ -1,6 +1,5 @@
 -- Set the search path to our cine_net schema
-SET
-    search_path TO cine_net;
+SET search_path TO cine_net;
 
 -- Drop existing table if it exists
 DROP TABLE IF EXISTS EventSimilarities;
@@ -13,9 +12,8 @@ CREATE TABLE EventSimilarities (
     PRIMARY KEY (event_id1, event_id2)
 );
 
--- Insert calculated similarities between events
-INSERT INTO
-    EventSimilarities (event_id1, event_id2, similarity)
+-- Insert calculated similarities between completed events
+INSERT INTO EventSimilarities (event_id1, event_id2, similarity)
 SELECT
     a.event_id AS event_id1,
     b.event_id AS event_id2,
@@ -26,17 +24,18 @@ FROM
     UserEventRatings a
     JOIN UserEventRatings b ON a.user_id = b.user_id
     AND a.event_id <> b.event_id
+    JOIN Events ea ON a.event_id = ea.id AND ea.status = 'Completed'
+    JOIN Events eb ON b.event_id = eb.id AND eb.status = 'Completed'
 GROUP BY
-    a.event_id,
-    b.event_id
+    a.event_id, b.event_id
 HAVING
     COUNT(a.user_id) > 1; -- Ensure there is enough user overlap for meaningful similarity
 
 -- Drop temporary table if it exists
-DROP TABLE IF EXISTS EventRecommendationTemp;
+DROP TABLE IF EXISTS CompletedEventRecommendationTemp;
 
 -- Create a temporary table to calculate and store event recommendations
-CREATE TEMP TABLE EventRecommendationTemp AS
+CREATE TEMP TABLE CompletedEventRecommendationTemp AS
 SELECT
     u.id AS user_id,
     s.event_id2 AS event_id,
@@ -45,27 +44,23 @@ FROM
     UserEventRatings r
     JOIN EventSimilarities s ON r.event_id = s.event_id1
     JOIN Users u ON u.id = r.user_id
-    LEFT JOIN UserEventRatings rm ON u.id = rm.user_id
-    AND s.event_id2 = rm.event_id
+    LEFT JOIN UserEventRatings rm ON u.id = rm.user_id AND s.event_id2 = rm.event_id
+    JOIN Events e ON s.event_id2 = e.id AND e.status = 'Completed' -- Only include completed events
 WHERE
     rm.event_id IS NULL -- Include only events that the user hasn't rated yet
 GROUP BY
-    u.id,
-    s.event_id2
+    u.id, s.event_id2
 HAVING
     SUM(ABS(s.similarity)) > 0;
 
--- Ensure that recommendations are based on significant similarities
 -- Insert recommendations into the permanent table, updating existing entries if necessary
-INSERT INTO
-    EventRecommendation (user_id, event_id, score_recommendation)
+INSERT INTO CompletedEventRecommendation (user_id, event_id, score_recommendation)
 SELECT
     user_id,
     event_id,
     score_recommendation
 FROM
-    EventRecommendationTemp 
-    ON CONFLICT (user_id, event_id) DO
-UPDATE
+    CompletedEventRecommendationTemp 
+ON CONFLICT (user_id, event_id) DO UPDATE
 SET
     score_recommendation = EXCLUDED.score_recommendation;
