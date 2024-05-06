@@ -4,6 +4,7 @@
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 BLUE='\033[0;34m'
+YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
 # Welcome message
@@ -13,9 +14,15 @@ echo "This tool allows you to search for users who follow a specific user."
 # New line
 echo
 
+# Answer for the question (french)
+echo -e "${YELLOW}Question: Écrivez une 'auto-jointure' (jointure de deux copies d'une même table)${NC}"
+
+# New line
+echo
+
 # Example user name
 echo "Example:"
-echo -e "${BLUE}Username: 'rgross'${NC}"
+echo -e "${BLUE}Username: 'thernandez'${NC}"
 
 echo
 
@@ -31,7 +38,7 @@ while [[ -z "$username" ]]; do
 done
 
 # Call psql with the SQL file and pass parameters correctly
-echo "Searching for events..."
+echo "Searching for users..."
 psql -d "$DATABASE_NAME" -v username="'$username'" -f follower_search_tool.sql
 
 # Success message

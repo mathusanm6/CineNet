@@ -16,6 +16,7 @@ fake = Faker()
 
 # Set seed for reproducibility
 np.random.seed(0)
+Faker.seed(0)
 
 # Number of rows for each table
 n_userroles = 5
@@ -284,7 +285,10 @@ posts = pd.DataFrame(
     {
         "id": range(1, n_posts + 1),
         "user_id": np.random.choice(users["id"], n_posts),
-        "date": [fake.date_time_this_year().isoformat(sep=" ") for _ in range(n_posts)],
+        "date": [
+            fake.date_time_between(start_date="-4y", end_date="now").isoformat()
+            for _ in range(n_posts)
+        ],
         "content": [fake.text() for _ in range(n_posts)],
         "parent_post_id": np.random.choice(
             [None] + list(range(1, n_posts + 1)), n_posts
@@ -362,7 +366,10 @@ participation = pd.DataFrame(
         "user_id": np.random.choice(
             users[users["role_type"] == 1]["id"], n_participations
         ),
-        "event_id": np.random.choice(events["id"], n_participations),
+        # Only select events that are scheduled
+        "event_id": np.random.choice(
+            events[events["status"] == "Scheduled"]["id"], n_participations
+        ),
         "type_participation": np.random.choice(
             ["Interested", "Participating"], n_participations
         ),
