@@ -57,6 +57,11 @@ function print_usage() {
     echo -e "          $0 all yes - Runs all scripts in sequence and show PostgreSQL output"
 }
 
+function clear_terminal() {
+    # Clear the right side of the terminal to ensure the output is clean
+    echo -e "\033[2J\033[1;1H" # Clear the screen and move the cursor to 1,1 position
+}
+
 # Check command line arguments to determine which scripts to run
 if [[ "$#" -lt 2 ]]; then
     echo "Error: Insufficient arguments provided."
@@ -68,18 +73,23 @@ show_output="$2"
 
 case "$1" in
 1)
+    clear_terminal
     run_create_db "$show_output"
     ;;
 2)
+    clear_terminal
     run_generate_csv
     ;;
 3)
+    clear_terminal
     run_import_data "$show_output"
     ;;
 4)
+    clear_terminal
     run_init_recommendation "$show_output"
     ;;
 all)
+    clear_terminal
     run_create_db "$show_output"
     run_generate_csv
     run_import_data "$show_output"

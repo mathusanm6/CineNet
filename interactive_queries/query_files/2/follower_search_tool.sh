@@ -37,9 +37,11 @@ while [[ -z "$username" ]]; do
     fi
 done
 
+folder_path=$1
+
 # Call psql with the SQL file and pass parameters correctly
 echo "Searching for users..."
-psql -d "$DATABASE_NAME" -v username="'$username'" -f follower_search_tool.sql
+psql -d "$DATABASE_NAME" -v username="'$username'" -f "$folder_path/follower_search_tool.sql"
 
 # Success message
 echo -e "${GREEN}Search completed. Check the output above for results.${NC}"
