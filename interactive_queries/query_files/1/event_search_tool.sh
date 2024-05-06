@@ -4,19 +4,26 @@
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 BLUE='\033[0;34m'
+YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
 # Welcome message
 echo -e "${GREEN}Welcome to the Event Search Tool${NC}"
-echo "This tool allows you to search for scheduled events by event name and country."
+echo "This tool allows you to search for users who are participating in an scheduled event in a specific country."
+
+# New line
+echo
+
+# Answer for the question (french)
+echo -e "${YELLOW}Question: Écrivez une requête qui porte sur au moins trois tables${NC}"
 
 # New line
 echo
 
 # Example event name and country name
 echo "Example:"
-echo -e "${BLUE}Event name: 'Exhibition law'${NC}"
-echo -e "${BLUE}Country name: 'Armenia'${NC}"
+echo -e "${BLUE}Event name: 'Exhibition moment'${NC}"
+echo -e "${BLUE}Country name: 'Andorra'${NC}"
 
 echo
 
