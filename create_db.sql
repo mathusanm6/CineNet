@@ -1,8 +1,8 @@
 -- For ease of use, this creates a schema
-CREATE SCHEMA IF NOT EXISTS cine_net;
+CREATE SCHEMA IF NOT EXISTS cinenet;
 
 set
-    search_path to cine_net;
+    search_path to cinenet;
 
 -- Users and their roles
 DROP TABLE IF EXISTS UserRoles CASCADE;

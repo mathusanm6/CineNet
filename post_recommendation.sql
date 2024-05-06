@@ -1,6 +1,6 @@
--- Set the search path to our cine_net schema
+-- Set the search path to our cinenet schema
 SET 
-    search_path TO cine_net;
+    search_path TO cinenet;
 
 -- Drop existing table if it exists
 DROP TABLE IF EXISTS PostSimilarities;
