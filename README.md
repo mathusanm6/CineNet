@@ -13,7 +13,7 @@ Pour utiliser le programme CineNet, lancez le script bash `run.sh` à la racine 
 - **all** : Pour exécuter tous les scripts dans l'ordre : `create_db.sh`, `generate_csv.py`, `import_data.sh`, et enfin `init_recommendation.sh`.
 - **interactive** : Pour lancer une session interactive de requêtes SQL sur la base de données.
 
-Chaque commande sauft `interactive` prend un argument supplémentaire pour contrôler l'affichage des détails de sortie. Les options sont :
+Chaque commande sauf `interactive` prend un argument supplémentaire pour contrôler l'affichage des détails de sortie. Les options sont :
 - **yes** : Pour afficher les détails de sortie de PostgreSQL.
 - **no** : Pour ne pas afficher les détails de sortie de PostgreSQL.
 
