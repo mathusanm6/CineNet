@@ -66,6 +66,7 @@ main() {
     while [[ $cont =~ ^[Yy]$ ]]; do
         display_menu
         read -p "$(get_color_code "yellow")Enter your choice (1-5, Q): $(get_color_code "reset")" choice
+        clear_screen
         case $choice in
         1)
             run_script "event_search_tool.sh" "1" "$super_folder_path"
