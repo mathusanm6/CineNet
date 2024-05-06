@@ -13,7 +13,7 @@ echo "This tool allows you to search for scheduled events by event name and coun
 # New line
 echo
 
-# Example event name and country name (format it as a code block)
+# Example event name and country name
 echo "Example:"
 echo -e "${BLUE}Event name: 'Exhibition law'${NC}"
 echo -e "${BLUE}Country name: 'Armenia'${NC}"
