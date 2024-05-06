@@ -3,8 +3,14 @@
 # Source the color execution functions
 source color_execute.sh
 
+function clear_terminal() {
+    # Clear the right side of the terminal to ensure the output is clean
+    echo -e "\033[2J\033[1;1H" # Clear the screen and move the cursor to 1,1 position
+}
+
 # Function to run generate_data.py
 function run_generate_csv() {
+    clear_terminal
     echo -e "$(get_color_code "yellow")Running generate_csv.py$(get_color_code "reset")"
     python3 generate_csv.py
 }
@@ -13,6 +19,7 @@ function run_generate_csv() {
 function run_create_db() {
     local show_output="$1"
 
+    clear_terminal
     echo -e "$(get_color_code "yellow")Running create_db.sh$(get_color_code "reset")"
     chmod +x create_db.sh
     ./create_db.sh "$show_output"
@@ -22,6 +29,7 @@ function run_create_db() {
 function run_import_data() {
     local show_output="$1"
 
+    clear_terminal
     echo -e "$(get_color_code "yellow")Running import_data.sh$(get_color_code "reset")"
     chmod +x import_data.sh
     ./import_data.sh "$show_output"
@@ -31,6 +39,7 @@ function run_import_data() {
 function run_init_recommendation() {
     local show_output="$1"
 
+    clear_terminal
     echo -e "$(get_color_code "yellow")Running init_recommendation.sh$(get_color_code "reset")"
     chmod +x init_recommendation.sh
     ./init_recommendation.sh "$show_output"
@@ -38,6 +47,7 @@ function run_init_recommendation() {
 
 # Function to run interactive queries
 function run_interactive_queries() {
+    clear_terminal
     echo -e "$(get_color_code "blue")Running interactive_queries.sh$(get_color_code "reset")"
     chmod +x interactive_queries/interactive_queries.sh
     ./interactive_queries/interactive_queries.sh "interactive_queries"
@@ -64,11 +74,6 @@ function print_usage() {
     echo -e "          $0 4 no - Only runs init_recommendation.sh and do not show PostgreSQL output"
     echo -e "          $0 all yes - Runs all scripts in sequence and show PostgreSQL output"
     echo -e "          $0 interactive - Runs in interactive mode"
-}
-
-function clear_terminal() {
-    # Clear the right side of the terminal to ensure the output is clean
-    echo -e "\033[2J\033[1;1H" # Clear the screen and move the cursor to 1,1 position
 }
 
 # Check command line arguments to determine which scripts to run
