@@ -2,6 +2,10 @@
 
 # Parameters for the script
 folder_path=$1
+choice=$2
+
+# SQL file for the script
+sql_file="sql_$choice.sql"
 
 # Colors for output
 RED='\033[0;31m'
@@ -22,32 +26,21 @@ while true; do
     clear_screen
 
     # Welcome message
-    echo -e "${GREEN}Welcome to the User Post After Date Search Tool${NC}"
-    echo "This tool allows you to search for users who have posted after a specific date."
+    echo -e "${GREEN}Welcome to the At Least User Count Per Country Search Tool${NC}"
+    echo "This tool allows you to search for countries with at least a specific number of users."
 
     # New line
     echo
 
     # Answer for the question (french)
-    echo -e "${YELLOW}Question: Écrivez une une sous-requête dans le WHERE${NC}"
+    echo -e "${YELLOW}Question: Écrivez une agrégation nécesssitant GROUP BY et HAVING${NC}"
 
     # New line
     echo
 
     # Example minimum number of followers
     echo "Example:"
-
-    # Check if 'date' command supports '-d' (GNU/Linux)
-    if date --version &>/dev/null; then
-        # GNU date command (Linux)
-        DATE_CMD="date -d '4 weeks ago' +%Y-%m-%d"
-    else
-        # BSD date command (macOS)
-        DATE_CMD="date -v-4w +%Y-%m-%d"
-    fi
-
-    echo -e "${BLUE}Date: '$($DATE_CMD)'${NC}"
-    echo "This example will search for users who have posted after 4 weeks ago."
+    echo -e "${BLUE}Minimum number of followers: 5${NC}"
 
     echo
 
@@ -55,19 +48,19 @@ while true; do
     DATABASE_NAME="cinenetdb"
 
     # Ensure variables are reset each time through the loop
-    date=""
+    min_user_count=""
 
     # Prompt the user for parameters
-    while [[ -z "$date" ]]; do
-        read -p "Enter the date (YYYY-MM-DD): " date
-        if [[ -z "$date" ]]; then
-            echo -e "${RED}Date cannot be empty. Please try again.${NC}"
+    while [[ -z "$min_user_count" ]]; do
+        read -p "Enter the minimum number of users: " min_user_count
+        if [[ -z "$min_user_count" ]]; then
+            echo -e "${RED}Minimum number of users cannot be empty. Please try again.${NC}"
         fi
     done
 
     # Call psql with the SQL file and pass parameters correctly
-    echo "Searching for users..."
-    psql -d "$DATABASE_NAME" -v date="'$date'" -f "$folder_path/user_post_after_date_search_tool.sql"
+    echo "Searching for countries..."
+    psql -d "$DATABASE_NAME" -v minusercount="'$min_user_count'" -f "$folder_path/$sql_file"
 
     # Success message
     echo -e "${GREEN}Search completed. Check the output above for results.${NC}"
@@ -80,5 +73,5 @@ while true; do
     fi
 done
 
-echo -e "${GREEN}Exiting the User Post After Date Search Tool...${NC}"
+echo "Exiting the At Least User Count Per Country Search Tool..."
 echo "Goodbye!"

@@ -301,7 +301,7 @@ posts = pd.DataFrame(
 tags = pd.DataFrame(
     {
         "id": range(1, n_tags + 1),
-        "name": [fake.word() + " tag" for _ in range(n_tags)],
+        "name": ["#"+fake.word() for _ in range(n_tags)],
     }
 )
 

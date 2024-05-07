@@ -2,6 +2,10 @@
 
 # Parameters for the script
 folder_path=$1
+choice=$2
+
+# SQL file for the script
+sql_file="sql_$choice.sql"
 
 # Colors for output
 RED='\033[0;31m'
@@ -64,7 +68,7 @@ while true; do
 
     # Call psql with the SQL file and pass parameters correctly
     echo "Searching for events..."
-    psql -d "$DATABASE_NAME" -v eventname="'$event_name'" -v countryname="'$country_name'" -f "$folder_path/event_search_tool.sql"
+    psql -d "$DATABASE_NAME" -v eventname="'$event_name'" -v countryname="'$country_name'" -f "$folder_path/$sql_file"
 
     # Success message
     echo -e "${GREEN}Search completed. Check the output above for results.${NC}"
