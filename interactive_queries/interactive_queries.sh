@@ -5,6 +5,11 @@ clear_screen() {
     echo -e "\033[2J\033[1;1H"
 }
 
+# Function to add new line
+add_new_line() {
+    echo
+}
+
 # Function to get color codes
 get_color_code() {
     case $1 in
@@ -47,49 +52,62 @@ run_script() {
 }
 
 # Variables for pagination
-declare -a pages=("1" "2" "3")
-declare -a page_title=("Page 1" "Page 2" "Page 3")
+declare -a pages=("1" "2")
 current_page=1
 
 # Display menu with pagination
 display_menu() {
     clear_screen
-    echo -e "$(get_color_code "green")Page $current_page: ${page_title[$((current_page - 1))]} - Please select a script to run:$(get_color_code "reset")"
+    echo -e "$(get_color_code "green")Page $current_page: - Please select a script to run:$(get_color_code "reset")"
 
     case $current_page in
     1)
         echo -e "$(get_color_code "blue")1) Event Search Tool$(get_color_code "reset")"
         echo -e "   This tool allows you to search for users who are participating in an scheduled event in a specific country. (at least three tables query)"
 
+        add_new_line
+
         echo -e "$(get_color_code "blue")2) Follower Search Tool$(get_color_code "reset")"
         echo -e "   This tool allows you to search for users who follow a specific user. (auto-join query)"
+
+        add_new_line
 
         echo -e "$(get_color_code "blue")3) At Least Following Search Tool$(get_color_code "reset")"
         echo -e "   This tool allows you to search for users who follow at least a specific number of users. (correlated subquery)"
 
+        add_new_line
+
         echo -e "$(get_color_code "blue")4) Average Popularity Score Tool$(get_color_code "reset")"
         echo -e "   This tool allows you to find the average popularity score of all users. (subquery in FROM)"
-        ;;
-    2)
+
+        add_new_line
+
         echo -e "$(get_color_code "blue")5) User Post After Date Search Tool$(get_color_code "reset")"
         echo -e "   This tool allows you to search for users who posted after a specific date. (subquery in WHERE)"
-
+        ;;
+    2)
         echo -e "$(get_color_code "blue")6) At Least User Count Per Country Search Tool$(get_color_code "reset")"
         echo -e "   This tool allows you to search for countries with at least a specific number of users. (aggregation with GROUP BY and HAVING)"
+
+        add_new_line
 
         echo -e "$(get_color_code "blue")7) At Least Post Count Specified Reaction Having Tag Search Tool$(get_color_code "reset")"
         echo -e "   This tool allows you to search for tags with at least a specific number of posts with a specified reaction."
         echo -e "   (aggregation with GROUP BY and HAVING)"
 
+        add_new_line
+        
         echo -e "$(get_color_code "blue")8) Average Maximum Number of Reactions Per Post Tool$(get_color_code "reset")"
         echo -e "   This tool allows you to find the average maximum number of reactions per post."
         echo -e "   (two aggregates calculation)"
-        ;;
-    3)
+
+        add_new_line
+
         echo -e "$(get_color_code "blue")9) User Participation Event With Status List Tool$(get_color_code "reset")"
         echo -e "   This tool allows you to list all users who have participated in an event with a specific status."
         echo -e "   (an outer join query - LEFT JOIN)"
         ;;
+    3) ;;
     esac
 
     echo
