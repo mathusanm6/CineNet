@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Parameters for the script
+folder_path=$1
+
 # Colors for output
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -7,41 +10,64 @@ BLUE='\033[0;34m'
 YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
-# Welcome message
-echo -e "${GREEN}Welcome to the Follower Search Tool${NC}"
-echo "This tool allows you to search for users who follow a specific user."
+# Function to clear the terminal screen
+clear_screen() {
+    echo -e "\033[2J\033[1;1H"
+}
 
-# New line
-echo
+while true; do
 
-# Answer for the question (french)
-echo -e "${YELLOW}Question: Écrivez une 'auto-jointure' (jointure de deux copies d'une même table)${NC}"
+    # Clear the terminal
+    clear_screen
 
-# New line
-echo
+    # Welcome message
+    echo -e "${GREEN}Welcome to the Follower Search Tool${NC}"
+    echo "This tool allows you to search for users who follow a specific user."
 
-# Example user name
-echo "Example:"
-echo -e "${BLUE}Username: 'thernandez'${NC}"
+    # New line
+    echo
 
-echo
+    # Answer for the question (french)
+    echo -e "${YELLOW}Question: Écrivez une 'auto-jointure' (jointure de deux copies d'une même table)${NC}"
 
-# Set the database name
-DATABASE_NAME="cinenetdb"
+    # New line
+    echo
 
-# Prompt the user for parameters
-while [[ -z "$username" ]]; do
-    read -p "Enter the username: " username
-    if [[ -z "$username" ]]; then
-        echo -e "${RED}Username cannot be empty. Please try again.${NC}"
+    # Example user name
+    echo "Example:"
+    echo -e "${BLUE}Username: 'thernandez'${NC}"
+
+    echo
+
+    # Set the database name
+    DATABASE_NAME="cinenetdb"
+
+    # Ensure variables are reset each time through the loop
+    username=""
+
+    # Prompt the user for parameters
+    while [[ -z "$username" ]]; do
+        read -p "Enter the username: " username
+        if [[ -z "$username" ]]; then
+            echo -e "${RED}Username cannot be empty. Please try again.${NC}"
+        fi
+    done
+
+    # Call psql with the SQL file and pass parameters correctly
+    echo "Searching for users..."
+    psql -d "$DATABASE_NAME" -v username="'$username'" -f "$folder_path/follower_search_tool.sql"
+
+    # Success message
+    echo -e "${GREEN}Search completed. Check the output above for results.${NC}"
+    echo
+
+    # Ask the user if they want to search again
+    read -p "Do you want to search for another user? (y/n): " search_again
+    if [[ "$search_again" != "y" ]]; then
+        break
     fi
 done
 
-folder_path=$1
+echo -e "${GREEN}Exiting the Follower Search Tool...${NC}"
+echo "Goodbye!"
 
-# Call psql with the SQL file and pass parameters correctly
-echo "Searching for users..."
-psql -d "$DATABASE_NAME" -v username="'$username'" -f "$folder_path/follower_search_tool.sql"
-
-# Success message
-echo -e "${GREEN}Search completed. Check the output above for results.${NC}"

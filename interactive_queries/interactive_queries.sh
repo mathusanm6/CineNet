@@ -50,11 +50,22 @@ run_script() {
 display_menu() {
     clear_screen
     echo -e "$(get_color_code "green")Please select a script to run:$(get_color_code "reset")"
-    echo -e "1) Event Search Tool"
-    echo -e "2) Follower Search Tool"
-    echo -e "3) At Least Following Search Tool"
-    echo -e "4) Average Popularity Score Tool"
-    echo -e "5) User Post After Date Search Tool"
+    
+    echo -e "$(get_color_code "blue")1) Event Search Tool$(get_color_code "reset")"
+    echo -e "   This tool allows you to search for users who are participating in an scheduled event in a specific country. (at least three tables query)"
+    
+    echo -e "$(get_color_code "blue")2) Follower Search Tool$(get_color_code "reset")"
+    echo -e "   This tool allows you to search for users who follow a specific user. (auto-join query)"
+    
+    echo -e "$(get_color_code "blue")3) At Least Following Search Tool$(get_color_code "reset")"
+    echo -e "   This tool allows you to search for users who follow at least a specific number of users. (correlated subquery)"
+    
+    echo -e "$(get_color_code "blue")4) Average Popularity Score Tool$(get_color_code "reset")"
+    echo -e "   This tool allows you to find the average popularity score of all users. (subquery in FROM)"
+    
+    echo -e "$(get_color_code "blue")5) User Post After Date Search Tool$(get_color_code "reset")"
+    echo -e "   This tool allows you to search for users who posted after a specific date. (subquery in WHERE)"
+    
     echo -e "$(get_color_code "red")Q) Quit$(get_color_code "reset")"
 }
 
@@ -91,7 +102,10 @@ main() {
             echo -e "$(get_color_code "red")Invalid choice. Please select a number between 1-5 or Q to quit.$(get_color_code "reset")"
             ;;
         esac
-        read -p "$(get_color_code "blue")Do you want to continue? (Y/n): $(get_color_code "reset")" cont
+
+        echo 
+        
+        read -p "$(get_color_code "blue")Do you want to run another script? (y/n): $(get_color_code "reset")" cont
         [[ -z "$cont" ]] && cont="y" # Default to 'Yes' if no input
         clear_screen
     done
