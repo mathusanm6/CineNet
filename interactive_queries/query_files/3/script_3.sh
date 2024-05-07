@@ -2,6 +2,10 @@
 
 # Parameters for the script
 folder_path=$1
+choice=$2
+
+# SQL file for the script
+sql_file="sql_$choice.sql"
 
 # Colors for output
 RED='\033[0;31m'
@@ -21,21 +25,21 @@ while true; do
     clear_screen
 
     # Welcome message
-    echo -e "${GREEN}Welcome to the Follower Search Tool${NC}"
-    echo "This tool allows you to search for users who follow a specific user."
+    echo -e "${GREEN}Welcome to the At Least Following Search Tool${NC}"
+    echo "This tool allows you to search for users who follow at least a specific number of users."
 
     # New line
     echo
 
     # Answer for the question (french)
-    echo -e "${YELLOW}Question: Écrivez une 'auto-jointure' (jointure de deux copies d'une même table)${NC}"
+    echo -e "${YELLOW}Question: Écrivez une sous-requête corrélée${NC}"
 
     # New line
     echo
 
-    # Example user name
+    # Example minimum number of followers
     echo "Example:"
-    echo -e "${BLUE}Username: 'thernandez'${NC}"
+    echo -e "${BLUE}Minimum number of followers: 4${NC}"
 
     echo
 
@@ -43,31 +47,30 @@ while true; do
     DATABASE_NAME="cinenetdb"
 
     # Ensure variables are reset each time through the loop
-    username=""
+    min_following_count=""
 
     # Prompt the user for parameters
-    while [[ -z "$username" ]]; do
-        read -p "Enter the username: " username
-        if [[ -z "$username" ]]; then
-            echo -e "${RED}Username cannot be empty. Please try again.${NC}"
+    while [[ -z "$min_following_count" ]]; do
+        read -p "Enter the minimum number of followers: " min_following_count
+        if [[ -z "$min_following_count" ]]; then
+            echo -e "${RED}Minimum number of followers cannot be empty. Please try again.${NC}"
         fi
     done
 
     # Call psql with the SQL file and pass parameters correctly
     echo "Searching for users..."
-    psql -d "$DATABASE_NAME" -v username="'$username'" -f "$folder_path/follower_search_tool.sql"
+    psql -d "$DATABASE_NAME" -v minfollowingcount="'$min_following_count'" -f "$folder_path/$sql_file"
 
     # Success message
     echo -e "${GREEN}Search completed. Check the output above for results.${NC}"
     echo
 
     # Ask the user if they want to search again
-    read -p "Do you want to search for another user? (y/n): " search_again
+    read -p "Do you want to search again? (y/n): " search_again
     if [[ "$search_again" != "y" ]]; then
         break
     fi
 done
 
-echo -e "${GREEN}Exiting the Follower Search Tool...${NC}"
+echo "Exiting the At Least Following Search Tool..."
 echo "Goodbye!"
-
