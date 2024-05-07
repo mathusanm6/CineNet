@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Parameters for the script
+folder_path=$1
+
 # Colors for output
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -21,8 +24,6 @@ echo
 
 # Set the database name
 DATABASE_NAME="cinenetdb"
-
-folder_path=$1
 
 # Call psql with the SQL file and pass parameters correctly
 echo "Searching for average popularity score..."
