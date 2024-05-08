@@ -26,7 +26,7 @@ while true; do
 
     # Welcome message
     echo -e "${GREEN}Welcome to the User Participation Event with Status List Tool${NC}"
-    echo "This tool allows you to list all users who have participated in an event with a specific status."
+    echo "This tool allows you to list all users who have expressed interest or are participating in an event with a specific status."
     echo -e "${RED}Possible types of participation: 'Interested', 'Participating'${NC}"
     echo -e "${RED}Possible statuses: 'Scheduled', 'Completed', 'Cancelled'${NC}"
 

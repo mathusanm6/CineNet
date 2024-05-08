@@ -104,7 +104,7 @@ display_menu() {
         add_new_line
 
         echo -e "$(get_color_code "blue")9) User Participation Event With Status List Tool$(get_color_code "reset")"
-        echo -e "   This tool allows you to list all users who have participated in an event with a specific status."
+        echo -e "   This tool allows you to list all users who have expressed interest or are participating in an event with a specific status."
         echo -e "   (an outer join query - LEFT JOIN)"
         ;;
     3) ;;
