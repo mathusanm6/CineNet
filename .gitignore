@@ -1,6 +1,6 @@
 *.csv
 
-!MoviesDataset.csv
+!resources/*
 
 # Mac OS X
 .DS_Store
