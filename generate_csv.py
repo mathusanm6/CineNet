@@ -31,7 +31,7 @@ n_userroles = 5
 n_users = 100
 n_countries = 20
 n_cities = 40
-n_userlocations = 100
+n_userlocations = n_users
 n_followings = 300
 n_friendships = 300
 n_categories = 20
@@ -267,18 +267,11 @@ cities = pd.DataFrame(
 )
 
 # Generate UserLocations
-if n_userlocations > len(users) * len(cities):
-    raise ValueError("Requested more user locations than possible unique pairs.")
-
-userlocations = (
-    pd.DataFrame(
-        {
-            "user_id": np.repeat(users["id"], len(cities)),
-            "city_code": np.tile(cities["city_code"], len(users)),
-        }
-    )
-    .sample(n_userlocations)
-    .reset_index(drop=True)
+userlocations = pd.DataFrame(
+    {
+        "user_id": users["id"],
+        "city_code": np.random.choice(cities["city_code"], size=len(users)),
+    }
 )
 
 # Generate Friendships Followings
@@ -401,11 +394,56 @@ reactions = pd.DataFrame(
 )
 
 # Ensure that there are no duplicate reactions
-mask = reactions.duplicated()
-while mask.any():
-    reactions.loc[mask, "user_id"] = np.random.choice(users["id"], size=mask.sum())
-    reactions.loc[mask, "post_id"] = np.random.choice(posts["id"], size=mask.sum())
-    mask = reactions.duplicated()
+while reactions.duplicated().any():
+    duplicated_indices = reactions[reactions.duplicated()].index
+    reactions.loc[duplicated_indices, "emoji"] = np.random.choice(
+        ["😄", "🙂", "😐", "🙁", "😩"], size=len(duplicated_indices)
+    )
+
+
+# Ensure that reactions do not refer directly to post_ids in the user_id column
+while True:
+    # Merge the posts DataFrame to the reactions DataFrame to include the user_id who created each post
+    enriched_reactions = reactions.merge(
+        posts[["id", "user_id"]],
+        how="left",
+        left_on="post_id",
+        right_on="id",
+        suffixes=("_reactor", "_poster"),
+    )
+
+    # Check for self-reactions
+    mask = enriched_reactions["user_id_reactor"] == enriched_reactions["user_id_poster"]
+    if not mask.any():
+        break  # Exit loop if no self-reactions are found
+
+    # For rows where a self-reaction is found, select a new post_id
+    for idx in enriched_reactions[mask].index:
+        user_id = enriched_reactions.loc[idx, "user_id_reactor"]
+
+        # Select possible posts not made by the user
+        possible_posts = posts[posts["user_id"] != user_id]["id"]
+
+        # Randomly select a new post_id from the possible posts
+        if not possible_posts.empty:
+            new_post_id = np.random.choice(possible_posts)
+            enriched_reactions.loc[idx, "post_id"] = new_post_id
+        else:
+            # Handle the case where no alternative posts are available
+            enriched_reactions.drop(
+                index=idx, inplace=True
+            )  # Removing the reaction as a policy decision
+
+    # Update the original reactions DataFrame
+    reactions = enriched_reactions.drop(columns=["id", "user_id_poster"])
+    reactions.rename(columns={"user_id_reactor": "user_id"}, inplace=True)
+
+
+# Ensure that one user can react to a post only once
+while reactions.duplicated(subset=["user_id", "post_id"]).any():
+    duplicated_indices = reactions[reactions.duplicated(subset=["user_id", "post_id"])].index
+    reactions.drop(index=duplicated_indices, inplace=True)
+
 
 # Generate Events
 events_dataset_path = "resources/EventsDataset.csv"
