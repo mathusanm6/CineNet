@@ -14,10 +14,10 @@ csv_dir = "CSV"
 ########################################################
 
 # Install and download necessary NLTK resources
-nltk.download('stopwords')
-stop_words = set(stopwords.words('english'))
+nltk.download("stopwords")
+stop_words = set(stopwords.words("english"))
 
-nltk.download('punkt')
+nltk.download("punkt")
 
 # Initialize Faker to generate fake data
 fake = Faker()
@@ -166,6 +166,7 @@ studios = pd.DataFrame(
     }
 )
 
+
 # Generate Tags
 # Extract tags while filtering out stopwords and normalizing to lowercase
 def extract_tags(text):
@@ -175,19 +176,37 @@ def extract_tags(text):
         if word.isalpha() and word.lower() not in stop_words
     ]
 
-title_tags = df_movies['Title'].apply(extract_tags).explode().unique()
-genre_tags = df_movies['Genre'].apply(lambda x: extract_tags(x.replace(",", " "))).explode().unique()
-description_tags = df_movies['Description'].apply(extract_tags).explode().unique()
-director_tags = df_movies['Director'].apply(extract_tags).explode().unique()
-actor_tags = df_movies['Actors'].apply(lambda x: extract_tags(x.replace(",", " "))).explode().unique()
-studio_tags = studios['name'].unique()
+
+title_tags = df_movies["Title"].apply(extract_tags).explode().unique()
+genre_tags = (
+    df_movies["Genre"]
+    .apply(lambda x: extract_tags(x.replace(",", " ")))
+    .explode()
+    .unique()
+)
+description_tags = df_movies["Description"].apply(extract_tags).explode().unique()
+director_tags = df_movies["Director"].apply(extract_tags).explode().unique()
+actor_tags = (
+    df_movies["Actors"]
+    .apply(lambda x: extract_tags(x.replace(",", " ")))
+    .explode()
+    .unique()
+)
+studio_tags = studios["name"].unique()
 
 # Combine all tags into a single set to ensure uniqueness
-all_tags = set(title_tags) | set(genre_tags) | set(description_tags) | set(director_tags) | set(actor_tags) | set(studio_tags)
+all_tags = (
+    set(title_tags)
+    | set(genre_tags)
+    | set(description_tags)
+    | set(director_tags)
+    | set(actor_tags)
+    | set(studio_tags)
+)
 
 # Create DataFrame
 tags = pd.DataFrame({"name": list(all_tags)})
-tags['id'] = range(1, len(tags) + 1)
+tags["id"] = range(1, len(tags) + 1)
 tags = tags[["id", "name"]]
 
 ################ Generate Data for Tables ###############
@@ -274,21 +293,39 @@ friendship = pd.DataFrame(
 )
 
 # Ensure that the initiator is not the same as the recipient
-
-mask = friendship["initiator_id"] == friendship["recipient_id"]
-while mask.any():
+while True:
+    mask = friendship["initiator_id"] == friendship["recipient_id"]
+    if not mask.any():
+        break
     friendship.loc[mask, "recipient_id"] = np.random.choice(
         users["id"], size=mask.sum()
     )
-    mask = friendship["initiator_id"] == friendship["recipient_id"]
 
 # Ensure that there are no duplicate friendships
-mask = friendship[["initiator_id", "recipient_id"]].duplicated()
-while mask.any():
-    friendship.loc[mask, "recipient_id"] = np.random.choice(
-        users["id"], size=mask.sum()
+while True:
+    mask = friendship.duplicated(subset=["initiator_id", "recipient_id"], keep=False)
+    if not mask.any():
+        break
+    indices = friendship[mask].index
+    friendship.loc[indices, "recipient_id"] = np.random.choice(
+        users["id"], size=len(indices)
     )
-    mask = friendship[["initiator_id", "recipient_id"]].duplicated()
+
+# Ensure that there are no double friendships in both directions
+while True:
+    mask = friendship.apply(
+        lambda row: any(
+            (friendship["initiator_id"] == row["recipient_id"])
+            & (friendship["recipient_id"] == row["initiator_id"])
+        ),
+        axis=1,
+    )
+    if not mask.any():
+        break
+    indices = friendship[mask].index
+    friendship.loc[indices, "recipient_id"] = np.random.choice(
+        users["id"], size=len(indices)
+    )
 
 # Generate Followings
 following = pd.DataFrame(
