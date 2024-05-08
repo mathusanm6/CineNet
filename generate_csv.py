@@ -3,6 +3,8 @@ import pycountry
 import numpy as np
 from faker import Faker
 import os
+import nltk
+from nltk.corpus import stopwords
 
 # Folder to store the generated CSV files
 csv_dir = "CSV"
@@ -10,6 +12,12 @@ csv_dir = "CSV"
 ########################################################
 ############### Generate Data for Tables ###############
 ########################################################
+
+# Install and download necessary NLTK resources
+nltk.download('stopwords')
+stop_words = set(stopwords.words('english'))
+
+nltk.download('punkt')
 
 # Initialize Faker to generate fake data
 fake = Faker()
@@ -20,33 +28,33 @@ Faker.seed(0)
 
 # Number of rows for each table
 n_userroles = 5
-n_users = 150
-n_countries = 10
-n_cities = 20
-n_userlocations = 50
-n_followings = 200
-n_friendships = 200
-n_categories = 10
-n_posts = 200
+n_users = 100
+n_countries = 20
+n_cities = 40
+n_userlocations = 100
+n_followings = 300
+n_friendships = 300
+n_categories = 20
+n_posts = 300
 n_tags = 30
 n_post_tags = 400
-n_reactions = 500
-n_movies = 100
-n_events = 50
-n_genres = 20
-n_studios = 15
+n_reactions = 600
+n_movies = 200
+n_events = 75
+n_genres = 30
+n_studios = 20
 n_movie_studios = 50
 n_people = 80
 n_roles = 5
-n_participations = 300
-n_screenings = 150
+n_participations = 400
+n_screenings = 300
 n_user_event_ratings = n_users * n_events // 2
 n_user_movie_ratings = n_users * n_movies // 2
 
 ########## Extract Data from MoviesDataset.csv ##########
 
 # Define the path to the MoviesDataset.csv file
-movies_dataset_path = "MoviesDataset.csv"
+movies_dataset_path = "resources/MoviesDataset.csv"
 
 # Load the MoviesDataset.csv file
 df_movies = pd.read_csv(movies_dataset_path)
@@ -141,12 +149,46 @@ for i, row in df_movies.iterrows():
             )
 
 # Generate Studios
+movie_studios_dataset_path = "resources/MovieStudiosDataset.csv"
+
+df_movie_studios = pd.read_csv(movie_studios_dataset_path)
+
+unique_studios = df_movie_studios["name"].unique()
+
+np.random.shuffle(unique_studios)
+
+n_studios = min(len(unique_studios), n_studios)
+
 studios = pd.DataFrame(
     {
         "id": range(1, n_studios + 1),
-        "name": [fake.company() for _ in range(n_studios)],
+        "name": unique_studios[:n_studios],
     }
 )
+
+# Generate Tags
+# Extract tags while filtering out stopwords and normalizing to lowercase
+def extract_tags(text):
+    return [
+        word.lower()
+        for word in nltk.word_tokenize(text)
+        if word.isalpha() and word.lower() not in stop_words
+    ]
+
+title_tags = df_movies['Title'].apply(extract_tags).explode().unique()
+genre_tags = df_movies['Genre'].apply(lambda x: extract_tags(x.replace(",", " "))).explode().unique()
+description_tags = df_movies['Description'].apply(extract_tags).explode().unique()
+director_tags = df_movies['Director'].apply(extract_tags).explode().unique()
+actor_tags = df_movies['Actors'].apply(lambda x: extract_tags(x.replace(",", " "))).explode().unique()
+studio_tags = studios['name'].unique()
+
+# Combine all tags into a single set to ensure uniqueness
+all_tags = set(title_tags) | set(genre_tags) | set(description_tags) | set(director_tags) | set(actor_tags) | set(studio_tags)
+
+# Create DataFrame
+tags = pd.DataFrame({"name": list(all_tags)})
+tags['id'] = range(1, len(tags) + 1)
+tags = tags[["id", "name"]]
 
 ################ Generate Data for Tables ###############
 
@@ -275,7 +317,7 @@ while mask.any():
 categories = pd.DataFrame(
     {
         "id": range(1, n_categories + 1),
-        "name": [fake.word() + " category" for _ in range(n_categories)],
+        "name": [fake.word() for _ in range(n_categories)],
         "description": [fake.sentence() for _ in range(n_categories)],
     }
 )
@@ -294,14 +336,6 @@ posts = pd.DataFrame(
             [None] + list(range(1, n_posts + 1)), n_posts
         ),
         "category_id": np.random.choice(categories["id"], n_posts),
-    }
-)
-
-# Generate Tags
-tags = pd.DataFrame(
-    {
-        "id": range(1, n_tags + 1),
-        "name": ["#"+fake.word() for _ in range(n_tags)],
     }
 )
 
@@ -337,17 +371,20 @@ while mask.any():
     mask = reactions.duplicated()
 
 # Generate Events
+events_dataset_path = "resources/EventsDataset.csv"
+
+df_events = pd.read_csv(events_dataset_path)
+
+unique_events = df_events["name"].unique()
+
+np.random.shuffle(unique_events)
+
+n_events = min(len(unique_events), n_events)
+
 events = pd.DataFrame(
     {
         "id": range(1, n_events + 1),
-        "name": [
-            np.random.choice(
-                ["Event", "Festival", "Screening", "Concert", "Exhibition"]
-            )
-            + " "
-            + fake.word()
-            for _ in range(n_events)
-        ],
+        "name": unique_events[:n_events],
         "date": [
             fake.future_date(end_date="+30d").isoformat() + "T" + fake.time()
             for _ in range(n_events)
