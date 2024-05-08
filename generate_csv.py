@@ -401,7 +401,7 @@ while reactions.duplicated().any():
     )
 
 
-# Ensure that reactions do not refer directly to post_ids in the user_id column
+# Ensure that users do not react to their own posts
 while True:
     # Merge the posts DataFrame to the reactions DataFrame to include the user_id who created each post
     enriched_reactions = reactions.merge(
