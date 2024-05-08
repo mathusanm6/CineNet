@@ -1,0 +1,5 @@
+pycountry
+numpy
+faker
+pandas
+nltk
