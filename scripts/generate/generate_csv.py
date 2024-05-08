@@ -613,6 +613,36 @@ while mask.any():
     mask = user_movie_ratings.duplicated(subset=["user_id", "movie_id"])
 
 ########################################################
+################ Modify Data for Tables ################
+########################################################
+
+# Choose users
+user_posting_id = 27
+users_sample = users[users["id"] != user_posting_id].sample(7)
+
+# Users from user_sample reacts to every single post of user_posting_id
+reactions_user1 = pd.DataFrame(columns=["user_id", "post_id", "emoji"])
+
+for post_id in posts[posts["user_id"] == user_posting_id]["id"]:
+    for user_id in users_sample["id"]:
+        reactions_user1 = pd.concat(
+            [
+                reactions_user1,
+                pd.DataFrame(
+                    {
+                        "user_id": [user_id],
+                        "post_id": [post_id],
+                        "emoji": np.random.choice(["😄", "🙂", "😐", "🙁", "😩"]),
+                    }
+                ),
+            ],
+            ignore_index=True,
+        )
+
+# Concatenate the reactions of user1 to reactions DataFrame
+reactions = pd.concat([reactions, reactions_user1], ignore_index=True)
+
+########################################################
 ################ Save Data to CSV Files ################
 ########################################################
 
