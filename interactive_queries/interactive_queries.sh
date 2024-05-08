@@ -77,8 +77,8 @@ display_menu() {
 
         add_new_line
 
-        echo -e "$(get_color_code "blue")4) Average Popularity Score Tool$(get_color_code "reset")"
-        echo -e "   This tool allows you to find the average popularity score of all users. (subquery in FROM)"
+        echo -e "$(get_color_code "blue")4) Average Popularity Score Per Country Finder$(get_color_code "reset")"
+        echo -e "   This tool allows you to find the average popularity score of all users per country. (subquery in FROM)"
 
         add_new_line
 

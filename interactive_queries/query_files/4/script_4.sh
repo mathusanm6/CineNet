@@ -15,8 +15,8 @@ YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
 # Welcome message
-echo -e "${GREEN}Welcome to the Average Popularity Score Tool${NC}"
-echo "This tool allows you to find the average popularity score of all users."
+echo -e "${GREEN}Welcome to the Average Popularity Score Per Country Finder!${NC}"
+echo "This tool allows you to find the average popularity score of all users per country."
 
 # New line
 echo
@@ -30,7 +30,7 @@ echo
 DATABASE_NAME="cinenetdb"
 
 # Call psql with the SQL file and pass parameters correctly
-echo "Searching for average popularity score..."
+echo "Searching for average popularity score per country..."
 psql -d "$DATABASE_NAME" -f "$folder_path/$sql_file"
 
 # Success message
