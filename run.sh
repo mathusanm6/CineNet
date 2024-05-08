@@ -61,21 +61,30 @@ function print_usage() {
     echo -e "  ${color_options}2${color_reset} - To run only ${color_command}generate_csv.py${color_reset}"
     echo -e "  ${color_options}3${color_reset} - To run only ${color_command}import_data.sh${color_reset}"
     echo -e "  ${color_options}4${color_reset} - To run only ${color_command}init_recommendation.sh${color_reset}"
-    echo -e "  ${color_options}all${color_reset} - To run ${color_command}create_db.sh${color_reset}, ${color_command}generate_csv.py${color_reset}, ${color_command}import_data.sh${color_reset}, and then execute ${color_command}init_recommendation.sh${color_reset}"
+    echo -e "  ${color_options}all${color_reset} - To run ${color_command}create_db.sh${color_reset}, ${color_command}generate_csv.py${color_reset}, and then execute ${color_command}import_data.sh${color_reset}"
     echo -e "  ${color_options}interactive${color_reset} - To run the interactive_queries.sh script"
     echo -e "${color_example}Examples:${color_reset} $0 1 yes - Just creates the database and show PostgreSQL output"
     echo -e "          $0 2 no - Only runs generate_csv.py and do not show PostgreSQL output"
     echo -e "          $0 3 yes - Only runs import_data.sh and show PostgreSQL output"
     echo -e "          $0 4 no - Only runs init_recommendation.sh and do not show PostgreSQL output"
-    echo -e "          $0 all yes - Runs all scripts in sequence and show PostgreSQL output"
+    echo -e "          $0 all yes - Runs all scripts except ${color_command}init_recommendation.sh${color_reset} in sequence and show PostgreSQL output"
     echo -e "          $0 interactive - Runs in interactive mode"
 }
 
-# Check command line arguments to determine which scripts to run
-if [[ "$#" -lt 1 ]]; then
-    echo "Error: Insufficient arguments provided."
-    print_usage
-    exit 1
+# Check for 'interactive' mode with exactly one argument
+if [[ "$1" == "interactive" ]]; then
+    if [[ "$#" -ne 1 ]]; then
+        echo "Error: Interactive mode does not require any arguments."
+        print_usage
+        exit 1
+    fi
+    echo "Running in interactive mode..."
+else
+    if [[ "$#" -ne 2 ]]; then
+        echo "Error: Invalid number of arguments."
+        print_usage
+        exit 1
+    fi
 fi
 
 show_output="$2"
@@ -102,7 +111,6 @@ all)
     run_create_db "$show_output"
     run_generate_csv
     run_import_data "$show_output"
-    run_init_recommendation "$show_output"
     ;;
 interactive)
     clear_terminal

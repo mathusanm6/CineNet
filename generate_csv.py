@@ -36,7 +36,7 @@ n_followings = 300
 n_friendships = 300
 n_categories = 20
 n_posts = 300
-n_tags = 30
+n_tags = 20
 n_post_tags = 400
 n_reactions = 600
 n_movies = 200
@@ -194,6 +194,14 @@ actor_tags = (
 )
 studio_tags = studios["name"].unique()
 
+# Drop NaN values
+title_tags = title_tags[~pd.isnull(title_tags)]
+genre_tags = genre_tags[~pd.isnull(genre_tags)]
+description_tags = description_tags[~pd.isnull(description_tags)]
+director_tags = director_tags[~pd.isnull(director_tags)]
+actor_tags = actor_tags[~pd.isnull(actor_tags)]
+studio_tags = studio_tags[~pd.isnull(studio_tags)]
+
 # Combine all tags into a single set to ensure uniqueness
 all_tags = (
     set(title_tags)
@@ -208,6 +216,9 @@ all_tags = (
 tags = pd.DataFrame({"name": list(all_tags)})
 tags["id"] = range(1, len(tags) + 1)
 tags = tags[["id", "name"]]
+
+# Keep only the first n_tags tags
+tags = tags.head(n_tags)
 
 ################ Generate Data for Tables ###############
 
@@ -370,19 +381,23 @@ posts = pd.DataFrame(
 )
 
 # Generate Post-Tags Links
-post_tags = pd.DataFrame(
-    {
-        "tag_id": np.random.choice(tags["id"], n_post_tags),
-        "post_id": np.random.choice(posts["id"], n_post_tags),
-    }
-)
+post_tags = pd.DataFrame(columns=["tag_id", "post_id"])
 
-# Ensure that there are no duplicate post-tag links
-mask = post_tags.duplicated()
-while mask.any():
-    post_tags.loc[mask, "tag_id"] = np.random.choice(tags["id"], size=mask.sum())
-    post_tags.loc[mask, "post_id"] = np.random.choice(posts["id"], size=mask.sum())
-    mask = post_tags.duplicated()
+for post_id in posts["id"]:
+    # Randomly decide how many tags this post will have (for example, 1 to 5 tags)
+    n_tags_for_post = np.random.randint(1, 6)
+    
+    # Select that many unique tags randomly
+    chosen_tags = np.random.choice(tags['id'], size=n_tags_for_post, replace=False)
+    
+    # Create a DataFrame of these combinations
+    temp_df = pd.DataFrame({
+        'post_id': post_id,
+        'tag_id': chosen_tags
+    })
+    
+    # Append to the main DataFrame
+    post_tags = pd.concat([post_tags, temp_df], ignore_index=True)
 
 # Generate Reactions
 reactions = pd.DataFrame(
