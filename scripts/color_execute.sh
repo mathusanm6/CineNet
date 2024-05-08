@@ -39,6 +39,7 @@ function execute_sql_script() {
     local script_name="$1"
     local dbname="$2"
     local show_output="$3"
+    local super_folder="$4"
 
     # Fetch the color code
     local color_reset="\033[0m"
@@ -50,9 +51,9 @@ function execute_sql_script() {
 
     # Execute the SQL script
     if [[ "$show_output" == "yes" ]]; then
-        psql -d "$dbname" -f "$script_name.sql"
+        psql -d "$dbname" -f "$super_folder/$script_name.sql"
     else
-        psql -d "$dbname" -f "$script_name.sql" > /dev/null 2>&1
+        psql -d "$dbname" -f "$super_folder/$script_name.sql" > /dev/null 2>&1
     fi
 
     # Check the exit status of the psql command
