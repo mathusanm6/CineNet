@@ -2,6 +2,7 @@ import pandas as pd
 import pycountry
 import numpy as np
 from faker import Faker
+import random
 import os
 import nltk
 from nltk.corpus import stopwords
@@ -261,9 +262,11 @@ while mask.any():
     mask = users["email"].duplicated()
 
 # Generate Countries
+
+# Generate a list of randomly selected distinct countries
 countries_data = [
     {"country_code": country.alpha_3, "name": country.name}
-    for country in list(pycountry.countries)[:n_countries]
+    for country in random.sample(list(pycountry.countries), n_countries)
 ]
 
 countries = pd.DataFrame(countries_data)

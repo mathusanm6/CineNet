@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Source the color execution functions
-source color_execute.sh
+source scripts/color_execute.sh
 
 function clear_terminal() {
     # Clear the right side of the terminal to ensure the output is clean
@@ -11,41 +11,46 @@ function clear_terminal() {
 # Function to run generate_data.py
 function run_generate_csv() {
     echo -e "$(get_color_code "yellow")Running generate_csv.py$(get_color_code "reset")"
-    python3 generate_csv.py
+    python3 scripts/generate/generate_csv.py
 }
 
 # Function to run create_db.sh
 function run_create_db() {
     local show_output="$1"
+    local script_name="scripts/create/create_db.sh"
 
     echo -e "$(get_color_code "yellow")Running create_db.sh$(get_color_code "reset")"
-    chmod +x create_db.sh
-    ./create_db.sh "$show_output"
+    chmod +x $script_name
+    bash $script_name "$show_output" "scripts/create"
 }
 
 # Function to run import_data.sh
 function run_import_data() {
     local show_output="$1"
+    local script_name="scripts/import/import_data.sh"
 
     echo -e "$(get_color_code "yellow")Running import_data.sh$(get_color_code "reset")"
-    chmod +x import_data.sh
-    ./import_data.sh "$show_output"
+    chmod +x $script_name
+    bash $script_name "$show_output" "scripts/import"
 }
 
 # Function to execute init_recommendation SQL script
 function run_init_recommendation() {
     local show_output="$1"
+    local script_name="scripts/recommendation/init_recommendation.sh"
 
     echo -e "$(get_color_code "yellow")Running init_recommendation.sh$(get_color_code "reset")"
-    chmod +x init_recommendation.sh
-    ./init_recommendation.sh "$show_output"
+    chmod +x $script_name
+    bash $script_name "$show_output" "scripts/recommendation"
 }
 
 # Function to run interactive queries
 function run_interactive_queries() {
+    local script_name="scripts/interactive_queries/interactive_queries.sh"
+
     echo -e "$(get_color_code "blue")Running interactive_queries.sh$(get_color_code "reset")"
-    chmod +x interactive_queries/interactive_queries.sh
-    ./interactive_queries/interactive_queries.sh "interactive_queries"
+    chmod +x $script_name
+    bash $script_name "scripts/interactive_queries"
 }
 
 function print_usage() {
