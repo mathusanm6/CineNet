@@ -377,7 +377,9 @@ posts = pd.DataFrame(
         ],
         "content": [fake.text() for _ in range(n_posts)],
         "parent_post_id": np.random.choice(
-            [None] + list(range(1, n_posts + 1)), n_posts
+            [None] + list(range(1, n_posts + 1)),
+            n_posts,
+            p=[0.1] + [0.9 / n_posts] * n_posts,
         ),
         "category_id": np.random.choice(categories["id"], n_posts),
     }
@@ -389,16 +391,13 @@ post_tags = pd.DataFrame(columns=["tag_id", "post_id"])
 for post_id in posts["id"]:
     # Randomly decide how many tags this post will have (for example, 1 to 5 tags)
     n_tags_for_post = np.random.randint(1, 6)
-    
+
     # Select that many unique tags randomly
-    chosen_tags = np.random.choice(tags['id'], size=n_tags_for_post, replace=False)
-    
+    chosen_tags = np.random.choice(tags["id"], size=n_tags_for_post, replace=False)
+
     # Create a DataFrame of these combinations
-    temp_df = pd.DataFrame({
-        'post_id': post_id,
-        'tag_id': chosen_tags
-    })
-    
+    temp_df = pd.DataFrame({"post_id": post_id, "tag_id": chosen_tags})
+
     # Append to the main DataFrame
     post_tags = pd.concat([post_tags, temp_df], ignore_index=True)
 
@@ -459,7 +458,9 @@ while True:
 
 # Ensure that one user can react to a post only once
 while reactions.duplicated(subset=["user_id", "post_id"]).any():
-    duplicated_indices = reactions[reactions.duplicated(subset=["user_id", "post_id"])].index
+    duplicated_indices = reactions[
+        reactions.duplicated(subset=["user_id", "post_id"])
+    ].index
     reactions.drop(index=duplicated_indices, inplace=True)
 
 

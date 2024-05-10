@@ -8,7 +8,7 @@ DROP TABLE IF EXISTS UserRoles CASCADE;
 
 CREATE TABLE UserRoles(
     type INTEGER PRIMARY KEY,
-    name varchar(255) NOT NULL,
+    name varchar(255) UNIQUE NOT NULL,
     description text
 );
 
@@ -21,7 +21,7 @@ CREATE TABLE Users(
     username varchar(255) UNIQUE NOT NULL,
     email varchar(255) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
-    birth_date date,
+    birth_date date CONSTRAINT check_birth_date CHECK (birth_date <= CURRENT_DATE),
     role_type integer NOT NULL REFERENCES UserRoles(type)
 );
 
@@ -54,8 +54,8 @@ DROP TABLE IF EXISTS Friendship CASCADE;
 
 CREATE TABLE Friendship(
     initiator_id integer NOT NULL REFERENCES Users(id),
-    recipient_id integer NOT NULL REFERENCES Users(id),
-    date timestamp NOT NULL,
+    recipient_id integer NOT NULL REFERENCES Users(id) CONSTRAINT friendship_check CHECK (initiator_id != recipient_id),
+    date timestamp NOT NULL CONSTRAINT friendship_date_check CHECK (date <= CURRENT_TIMESTAMP),
     PRIMARY KEY (initiator_id, recipient_id)
 );
 
@@ -63,8 +63,8 @@ DROP TABLE IF EXISTS FOLLOWING CASCADE;
 
 CREATE TABLE FOLLOWING (
     follower_id integer NOT NULL REFERENCES Users(id),
-    followed_id integer NOT NULL REFERENCES Users(id),
-    date timestamp NOT NULL,
+    followed_id integer NOT NULL REFERENCES Users(id) CONSTRAINT following_check CHECK (follower_id != followed_id),
+    date timestamp NOT NULL CONSTRAINT following_date_check CHECK (date <= CURRENT_TIMESTAMP),
     PRIMARY KEY (follower_id, followed_id)
 );
 
@@ -73,7 +73,7 @@ DROP TABLE IF EXISTS Categories CASCADE;
 
 CREATE TABLE Categories(
     id integer PRIMARY KEY,
-    name varchar(255) NOT NULL,
+    name varchar(255) UNIQUE NOT NULL,
     description text
 );
 
@@ -82,17 +82,17 @@ DROP TABLE IF EXISTS Posts CASCADE;
 CREATE TABLE Posts(
     id integer PRIMARY KEY,
     user_id integer NOT NULL REFERENCES Users(id),
-    date timestamp NOT NULL,
+    date timestamp NOT NULL CONSTRAINT post_date_check CHECK (date <= CURRENT_TIMESTAMP),
     content text NOT NULL,
     parent_post_id integer REFERENCES Posts(id),
-    category_id integer NOT NULL REFERENCES Categories(id)
+    category_id integer REFERENCES Categories(id)
 );
 
 DROP TABLE IF EXISTS Tags CASCADE;
 
 CREATE TABLE Tags(
     id integer PRIMARY KEY,
-    name varchar(255) NOT NULL
+    name varchar(255) UNIQUE NOT NULL
 );
 
 DROP TABLE IF EXISTS PostTags CASCADE;
@@ -127,20 +127,20 @@ CREATE TABLE Events(
     date timestamp NOT NULL,
     city_code integer NOT NULL REFERENCES Cities(city_code),
     organizer_id integer NOT NULL REFERENCES Users(id),
-    capacity integer NOT NULL,
-    ticket_price numeric NOT NULL
+    capacity integer NOT NULL CONSTRAINT check_capacity CHECK (capacity > 0),
+    ticket_price numeric NOT NULL CONSTRAINT check_ticket_price CHECK (ticket_price >= 0)
 );
 
 -- Enabling different event types (Scheduled, Completed, Cancelled)
 ALTER TABLE Events
-    ADD COLUMN status VARCHAR(255) NOT NULL;
+    ADD COLUMN status VARCHAR(255) NOT NULL DEFAULT 'Scheduled' CONSTRAINT check_status CHECK (status IN ('Scheduled', 'Completed', 'Cancelled'));
 
 DROP TABLE IF EXISTS Participation CASCADE;
 
 CREATE TABLE Participation(
     user_id integer NOT NULL REFERENCES Users(id),
     event_id integer NOT NULL REFERENCES Events(id),
-    type_participation varchar(255) NOT NULL,
+    type_participation varchar(255) NOT NULL CONSTRAINT check_type_participation CHECK (type_participation IN ('Interested', 'Participating')),
     PRIMARY KEY (user_id, event_id)
 );
 
@@ -149,7 +149,7 @@ DROP TABLE IF EXISTS Genres CASCADE;
 
 CREATE TABLE Genres(
     id integer PRIMARY KEY,
-    name varchar(255) NOT NULL,
+    name varchar(255) UNIQUE NOT NULL,
     parent_genre_id integer REFERENCES Genres(id)
 );
 
@@ -157,7 +157,7 @@ DROP TABLE IF EXISTS Studios CASCADE;
 
 CREATE TABLE Studios(
     id integer PRIMARY KEY,
-    name varchar(255) NOT NULL
+    name varchar(255) UNIQUE NOT NULL
 );
 
 DROP TABLE IF EXISTS Movies CASCADE;
@@ -165,7 +165,7 @@ DROP TABLE IF EXISTS Movies CASCADE;
 CREATE TABLE Movies(
     id integer PRIMARY KEY,
     title varchar(255) NOT NULL,
-    duration integer NOT NULL,
+    duration integer NOT NULL CONSTRAINT check_duration CHECK (duration > 0),
     release_date date NOT NULL
 );
 
@@ -190,14 +190,14 @@ DROP TABLE IF EXISTS People CASCADE;
 CREATE TABLE People(
     id integer PRIMARY KEY,
     name varchar(255) NOT NULL,
-    birth_date date NOT NULL
+    birth_date date NOT NULL CONSTRAINT check_birth_date CHECK (birth_date <= CURRENT_DATE)
 );
 
 DROP TABLE IF EXISTS PeopleRoles CASCADE;
 
 CREATE TABLE PeopleRoles(
     id integer PRIMARY KEY,
-    name varchar(255)
+    name varchar(255) UNIQUE NOT NULL
 );
 
 DROP TABLE IF EXISTS MovieCollaborators CASCADE;
@@ -224,7 +224,7 @@ DROP TABLE IF EXISTS UserEventRatings CASCADE;
 CREATE TABLE UserEventRatings(
     user_id integer NOT NULL REFERENCES Users(id),
     event_id integer NOT NULL REFERENCES Events(id),
-    rating integer NOT NULL,
+    rating integer NOT NULL CONSTRAINT check_rating CHECK (rating >= 0 AND rating <= 5),
     PRIMARY KEY (user_id, event_id)
 );
 
@@ -233,7 +233,7 @@ DROP TABLE IF EXISTS UserMovieRatings CASCADE;
 CREATE TABLE UserMovieRatings(
     user_id integer NOT NULL REFERENCES Users(id),
     movie_id integer NOT NULL REFERENCES Movies(id),
-    rating integer NOT NULL,
+    rating integer NOT NULL CONSTRAINT check_rating CHECK (rating >= 0 AND rating <= 5),
     PRIMARY KEY (user_id, movie_id)
 );
 
