@@ -117,6 +117,24 @@ display_menu() {
         echo -e "$(get_color_code "blue")11) User Reacting to Every Single Post of a Given User Search Tool$(get_color_code "reset")"
         echo -e "    This tool allows you to list all users who reacted to every single post of a given user."
         echo -e "    (two equivalent queries with aggregation)"
+
+        add_new_line
+
+        echo -e "$(get_color_code "blue")12) Posts Not Having Any Subposts Listing Tool$(get_color_code "reset")"
+        echo -e "    This tool allows you to find all posts that do not have any subposts."
+        echo -e "    (EXCEPT : Right Results)"
+
+        add_new_line
+
+        echo -e "$(get_color_code "blue")13) Posts Not Having Any Subposts Listing Tool$(get_color_code "reset")"
+        echo -e "    This tool allows you to find all posts that do not have any subposts."
+        echo -e "    (NOT EXISTS : Right Results)"
+
+        add_new_line
+
+        echo -e "$(get_color_code "blue")14) Posts Not Having Any Subposts Listing Tool$(get_color_code "reset")"
+        echo -e "    This tool allows you to find all posts that do not have any subposts."
+        echo -e "    (NOT IN : Wrong Results)"
         ;;
     esac
 
@@ -135,7 +153,7 @@ main() {
         clear_screen
 
         case $choice in
-        1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11)
+        1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14)
             run_script "$choice" "$super_folder_path"
 
             echo
