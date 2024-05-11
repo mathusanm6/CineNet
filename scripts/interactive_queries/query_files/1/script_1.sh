@@ -39,8 +39,8 @@ while true; do
 
     # Example event name and country name
     echo "Example:"
-    echo -e "${BLUE}Event name: 'Exhibition moment'${NC}"
-    echo -e "${BLUE}Country name: 'Andorra'${NC}"
+    echo -e "${BLUE}Event name: 'True/False Film Fest'${NC}"
+    echo -e "${BLUE}Living and Event Country name: 'Nigeria'${NC}"
 
     echo
 

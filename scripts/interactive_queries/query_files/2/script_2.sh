@@ -39,7 +39,7 @@ while true; do
 
     # Example user name
     echo "Example:"
-    echo -e "${BLUE}Username: 'thernandez'${NC}"
+    echo -e "${BLUE}Username: 'iwatson'${NC}"
 
     echo
 

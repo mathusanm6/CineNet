@@ -42,7 +42,8 @@ n_tags = 20
 n_post_tags = 400
 n_reactions = 600
 n_movies = 200
-n_events = 500
+n_events = 78
+n_events_per_name = 5
 n_genres = 30
 n_studios = 20
 n_movie_studios = 50
@@ -469,41 +470,53 @@ events_dataset_path = "resources/EventsDataset.csv"
 
 df_events = pd.read_csv(events_dataset_path)
 
+# Event names
 event_names = df_events["name"].unique()
+event_cities = np.random.choice(cities["city_code"], len(event_names), replace=True)
+event_to_city = dict(zip(event_names, event_cities))
 
-# Generating dates and initial statuses
+# Generating dates and statuses
 dates_and_statuses = []
 today = datetime.date.today()
-start_date = today.replace(year=today.year - 3)  # 3 years back
+start_date = today.replace(year=today.year - 4)  # 3 years back
 end_date = today.replace(year=today.year + 1)  # 1 year into the future
 
-for _ in range(n_events):
-    # Uniform distribution over the specified date range
-    days_between = (end_date - start_date).days
-    random_days = np.random.randint(days_between)
-    date = start_date + datetime.timedelta(days=random_days)
+for event_name in event_names:
+    city_code = event_to_city[event_name]
+    initial_year = random.randint(start_date.year, start_date.year + 1)
+    event_date = datetime.date(
+        initial_year, random.randint(1, 12), random.randint(1, 28)
+    )
 
-    if date > today:
-        status = np.random.choice(["Scheduled", "Cancelled"])
-    else:
-        status = np.random.choice(["Completed", "Cancelled"])
+    for _ in range(n_events_per_name):
+        if event_date > end_date:
+            break
 
-    dates_and_statuses.append((date.isoformat() + "T" + fake.time(), status))
+        if event_date > today:
+            status = np.random.choice(["Scheduled", "Cancelled"])
+        else:
+            status = np.random.choice(["Completed", "Cancelled"])
 
-dates, statuses = zip(*dates_and_statuses)
+        dates_and_statuses.append(
+            (event_name, event_date.isoformat() + "T" + fake.time(), city_code, status)
+        )
 
-# Select event names with replacement
-event_selection = np.random.choice(event_names, n_events, replace=True)
+        # Increment the year by either one or two years
+        increment_years = random.choice([1, 2])
+        event_date = event_date.replace(year=event_date.year + increment_years)
 
+event_selection, dates, city_codes, statuses = zip(*dates_and_statuses)
+
+# DataFrame of events
 events = pd.DataFrame(
     {
-        "id": range(1, n_events + 1),
+        "id": range(1, len(dates) + 1),
         "name": event_selection,
         "date": dates,
-        "city_code": np.random.choice(cities["city_code"], n_events),
-        "organizer_id": np.random.choice(users["id"], n_events),
-        "capacity": np.random.randint(50, 501, n_events),
-        "ticket_price": np.random.uniform(10, 100, n_events).round(2),
+        "city_code": city_codes,
+        "organizer_id": np.random.choice(users["id"], len(dates)),
+        "capacity": np.random.randint(50, 501, len(dates)),
+        "ticket_price": np.random.uniform(10, 100, len(dates)).round(2),
         "status": statuses,
     }
 )

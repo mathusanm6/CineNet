@@ -39,7 +39,7 @@ while true; do
 
     # Example minimum number of followers
     echo "Example:"
-    echo -e "${BLUE}Minimum number of followers: 4${NC}"
+    echo -e "${BLUE}Minimum number of followers: 7${NC}"
 
     echo
 
