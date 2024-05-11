@@ -6,6 +6,7 @@ import random
 import os
 import nltk
 from nltk.corpus import stopwords
+import datetime
 
 # Folder to store the generated CSV files
 csv_dir = "CSV"
@@ -41,7 +42,7 @@ n_tags = 20
 n_post_tags = 400
 n_reactions = 600
 n_movies = 200
-n_events = 75
+n_events = 500
 n_genres = 30
 n_studios = 20
 n_movie_studios = 50
@@ -411,12 +412,11 @@ reactions = pd.DataFrame(
 )
 
 # Ensure that there are no duplicate reactions
-while reactions.duplicated().any():
-    duplicated_indices = reactions[reactions.duplicated()].index
-    reactions.loc[duplicated_indices, "emoji"] = np.random.choice(
-        ["😄", "🙂", "😐", "🙁", "😩"], size=len(duplicated_indices)
-    )
-
+mask = reactions.duplicated(subset=["user_id", "post_id"])
+while mask.any():
+    reactions.loc[mask, "user_id"] = np.random.choice(users["id"], size=mask.sum())
+    reactions.loc[mask, "post_id"] = np.random.choice(posts["id"], size=mask.sum())
+    mask = reactions.duplicated(subset=["user_id", "post_id"])
 
 # Ensure that users do not react to their own posts
 while True:
@@ -469,25 +469,42 @@ events_dataset_path = "resources/EventsDataset.csv"
 
 df_events = pd.read_csv(events_dataset_path)
 
-unique_events = df_events["name"].unique()
+event_names = df_events["name"].unique()
 
-np.random.shuffle(unique_events)
+# Generating dates and initial statuses
+dates_and_statuses = []
+today = datetime.date.today()
+start_date = today.replace(year=today.year - 3)  # 3 years back
+end_date = today.replace(year=today.year + 1)  # 1 year into the future
 
-n_events = min(len(unique_events), n_events)
+for _ in range(n_events):
+    # Uniform distribution over the specified date range
+    days_between = (end_date - start_date).days
+    random_days = np.random.randint(days_between)
+    date = start_date + datetime.timedelta(days=random_days)
+
+    if date > today:
+        status = np.random.choice(["Scheduled", "Cancelled"])
+    else:
+        status = np.random.choice(["Completed", "Cancelled"])
+
+    dates_and_statuses.append((date.isoformat() + "T" + fake.time(), status))
+
+dates, statuses = zip(*dates_and_statuses)
+
+# Select event names with replacement
+event_selection = np.random.choice(event_names, n_events, replace=True)
 
 events = pd.DataFrame(
     {
         "id": range(1, n_events + 1),
-        "name": unique_events[:n_events],
-        "date": [
-            fake.future_date(end_date="+30d").isoformat() + "T" + fake.time()
-            for _ in range(n_events)
-        ],
+        "name": event_selection,
+        "date": dates,
         "city_code": np.random.choice(cities["city_code"], n_events),
         "organizer_id": np.random.choice(users["id"], n_events),
         "capacity": np.random.randint(50, 501, n_events),
         "ticket_price": np.random.uniform(10, 100, n_events).round(2),
-        "status": np.random.choice(["Scheduled", "Completed", "Cancelled"], n_events),
+        "status": statuses,
     }
 )
 
@@ -642,6 +659,13 @@ for post_id in posts[posts["user_id"] == user_posting_id]["id"]:
 
 # Concatenate the reactions of user1 to reactions DataFrame
 reactions = pd.concat([reactions, reactions_user1], ignore_index=True)
+
+# Ensure that there are no duplicate reactions
+mask = reactions.duplicated(subset=["user_id", "post_id"])
+while mask.any():
+    reactions.loc[mask, "user_id"] = np.random.choice(users["id"], size=mask.sum())
+    reactions.loc[mask, "post_id"] = np.random.choice(posts["id"], size=mask.sum())
+    mask = reactions.duplicated(subset=["user_id", "post_id"])
 
 ########################################################
 ################ Save Data to CSV Files ################
