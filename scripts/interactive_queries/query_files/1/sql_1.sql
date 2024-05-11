@@ -2,8 +2,9 @@
 SET search_path TO cinenet;
 
 -- Query that involves at least three tables to retrieve events.
--- This query selects the username of users who are participating in an scheduled event in a specific country.
--- It joins the Users, UserLocations, Cities, Countries, Participation, and Events tables to retrieve the required information.
+-- This query selects the username of users who are participating in an scheduled event in a specific city and country
+-- where they are located.
+-- The query receives two parameters: the name of the event and the name of the city.
 SELECT
     U.username,
     E.date
@@ -18,5 +19,6 @@ WHERE
     E.status = 'Scheduled'
     AND P.type_participation = 'Participating'
     AND E.name = :eventname
-    AND CO.name = :countryname;
+    AND CO.name = :countryname
+    ;
 

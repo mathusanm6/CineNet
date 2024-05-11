@@ -15,3 +15,7 @@ FROM
         AND P.type_participation = :typeparticipation
     LEFT JOIN Events E ON P.event_id = E.id
         AND E.status = :eventstatus
+WHERE
+    U.username IS NOT NULL
+    AND P.type_participation IS NOT NULL
+    AND E.name IS NOT NULL;

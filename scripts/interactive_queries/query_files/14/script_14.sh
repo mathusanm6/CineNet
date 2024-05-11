@@ -32,9 +32,12 @@ DATABASE_NAME="cinenetdb"
 
 # Call psql with the SQL file and pass parameters correctly
 echo "Searching for posts not having any subposts..."
+
+# Run the SQL script
+read -s -p "Press enter to continue"
+
 psql -d "$DATABASE_NAME" -f "$folder_path/$sql_file"
 
--- Ask for running the correct query
 echo
 echo -e "${BLUE}Would you like to run the correct query?${NC}"
 echo -e "${BLUE}Please enter 'yes' or 'no':${NC}"
