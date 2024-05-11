@@ -52,7 +52,7 @@ run_script() {
 }
 
 # Variables for pagination
-declare -a pages=("1" "2" "3")
+declare -a pages=("1" "2" "3" "4")
 current_page=1
 
 # Display menu with pagination
@@ -136,6 +136,18 @@ display_menu() {
         echo -e "    This tool allows you to find all posts that do not have any subposts."
         echo -e "    (NOT IN : Wrong Results)"
         ;;
+    4)
+        echo -e "$(get_color_code "blue")15) Upcoming Scheduled Event Finding Tool$(get_color_code "reset")"
+        echo -e "    This tool allows you to find the earliest upcoming scheduled event."
+        echo -e "    (recursive query)"
+
+        add_new_line
+
+        echo -e "$(get_color_code "blue")16) Top 10 Popular Events Finder$(get_color_code "reset")"
+        echo -e "    This tool allows you to find the top 10 popular events."
+        echo -e "    (windowing)"
+
+        ;;
     esac
 
     echo
@@ -153,7 +165,7 @@ main() {
         clear_screen
 
         case $choice in
-        1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14)
+        1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16)
             run_script "$choice" "$super_folder_path"
 
             echo
