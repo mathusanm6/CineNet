@@ -16,20 +16,20 @@ NC='\033[0m' # No Color
 
 # Welcome message
 echo -e "${GREEN}Welcome to the Popular Future Events Finding Tool${NC}"
-echo "This tool allows you to find future events with more than 50 participants per month."
+echo "This tool allows you to find future events with more than 10 participants per month."
 
 # New line
 echo
 
 # Answer for the question (french)
-echo -e "${YELLOW}Question: Écrivez une requête pour trouver les événements futurs ayant plus de 50 participants par mois${NC}"
+echo -e "${YELLOW}Question: Écrivez une requête pour trouver les événements futurs ayant plus de 10 participants par mois${NC}"
 echo
 
 # Set the database name
 DATABASE_NAME="cinenetdb"
 
 # Call psql with the SQL file and pass parameters correctly
-echo "Searching for future events with more than 50 participants..."
+echo "Searching for future events with more than 10 participants..."
 psql -d "$DATABASE_NAME" -f "$folder_path/$sql_file"
 
 # Success message

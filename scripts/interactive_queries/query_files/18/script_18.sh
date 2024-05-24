@@ -28,9 +28,21 @@ echo
 # Set the database name
 DATABASE_NAME="cinenetdb"
 
+# Ensure variables are reset each time through the loop
+pgid=""
+
+# Prompt the user for parameters
+read -p "Enter the parent genre ID: " pgid
+
+# Check if the parent genre ID is empty
+if [[ -z "$pgid" ]]; then
+    echo -e "${RED}Error: Parent genre ID cannot be empty.${NC}"
+    exit 1
+fi
+
 # Call psql with the SQL file and pass parameters correctly
 echo "Finding all sub-genres of the specified parent genre..."
-psql -d "$DATABASE_NAME" -f "$folder_path/$sql_file"
+psql -d "$DATABASE_NAME" -f "$folder_path/$sql_file" -v pgid="$pgid"
 
 # Success message
 echo -e "${GREEN}Search completed. Check the output above for results.${NC}"

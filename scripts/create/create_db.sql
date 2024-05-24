@@ -59,9 +59,9 @@ CREATE TABLE Friendship(
     PRIMARY KEY (initiator_id, recipient_id)
 );
 
-DROP TABLE IF EXISTS FOLLOWING CASCADE;
+DROP TABLE IF EXISTS Following CASCADE;
 
-CREATE TABLE FOLLOWING (
+CREATE TABLE Following (
     follower_id integer NOT NULL REFERENCES Users(id),
     followed_id integer NOT NULL REFERENCES Users(id) CONSTRAINT following_check CHECK (follower_id != followed_id),
     date timestamp NOT NULL CONSTRAINT following_date_check CHECK (date <= CURRENT_TIMESTAMP),

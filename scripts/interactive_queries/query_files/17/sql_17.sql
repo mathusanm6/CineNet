@@ -9,11 +9,11 @@ SELECT
 FROM
     Users U
     JOIN (
-        SELECT 
-            user_id, 
-            COUNT(*) AS PostsCount 
-        FROM 
-            Posts 
-        GROUP BY 
-            user_id
-    ) PostCount ON U.id = PostCount.user_id;
+        SELECT
+            user_id,
+            COUNT(*) AS PostsCount
+        FROM
+            Posts
+        GROUP BY
+            user_id) PostCount ON U.id = PostCount.user_id;
+
