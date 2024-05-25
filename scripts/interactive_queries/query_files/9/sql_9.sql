@@ -19,3 +19,4 @@ WHERE
     U.username IS NOT NULL
     AND P.type_participation IS NOT NULL
     AND E.name IS NOT NULL;
+

@@ -66,7 +66,7 @@ SELECT
     p.event_id,
     SUM(us.similarity) AS base_score,
     COALESCE(SUM(mr.score_recommendation), 0) AS movie_score, -- Add movie recommendation score
-    SUM(us.similarity) + COALESCE(SUM(mr.score_recommendation), 0) AS recommendation_score -- Adjusted score including movie preferences
+    SUM(us.similarity) + COALESCE(SUM(mr.score_recommendation), 0) AS raw_recommendation_score -- Adjusted score including movie preferences
 FROM
     UserSimilarities us
     JOIN Participation p ON us.user_id2 = p.user_id
@@ -83,6 +83,17 @@ GROUP BY
     us.user_id1,
     p.event_id;
 
+-- Normalize the recommendation scores to be between 0 and 5
+CREATE TEMP TABLE NormalizedRecommendation AS
+SELECT
+    user_id,
+    event_id,
+    raw_recommendation_score,
+    -- Normalization formula: (x - min) / (max - min) * (desired_max - desired_min) + desired_min
+(raw_recommendation_score - MIN(raw_recommendation_score) OVER ()) / NULLIF((MAX(raw_recommendation_score) OVER () - MIN(raw_recommendation_score) OVER ()), 0) * 5 AS recommendation_score
+FROM
+    ScheduledEventRecommendationTemp;
+
 -- Insert recommendations into a permanent table, updating existing entries if necessary
 INSERT INTO ScheduledEventRecommendation(user_id, event_id, score_recommendation)
 SELECT
@@ -90,7 +101,7 @@ SELECT
     event_id,
     recommendation_score
 FROM
-    ScheduledEventRecommendationTemp
+    NormalizedRecommendation
 ON CONFLICT (user_id,
     event_id)
     DO UPDATE SET
