@@ -23,6 +23,12 @@ A social forum for cinema fans, based on a database, using PostgreSQL for data p
 
 The [ER Diagram](./er-diagram-cinenet/erd.pdf) for the CineNet database is available in the `er-diagram-cinenet` directory. The diagram was created using Lucidchart and exported as a PDF file.
 
+##### Errors on the ER Diagram
+
+- The `Genre` table should not include a release date attribute, contrary to what is indicated on the diagram.
+- The `Person` table should only contain the full name of the person, without distinction of first name, last name, etc.
+- Several tables related to recommendations are not included in the ER diagram, as they are dynamically generated or were added after the initial design.
+
 #### Report:
 
 The report for this project is available in French at [CineNet-Rapport](https://github.com/mathusanm6/CineNet-Rapport) github repository.
@@ -134,9 +140,3 @@ $ ./run.sh 4 no   # Only starts init_recommendation.sh without displaying Postgr
 $ ./run.sh all yes  # Runs all scripts except init_recommendation.sh in sequence and displays PostgreSQL outputs
 $ ./run.sh interactive  # Starts an interactive SQL query session
 ```
-
-### Errors on the ER Diagram
-
-- The `Genre` table should not include a release date attribute, contrary to what is indicated on the diagram.
-- The `Person` table should only contain the full name of the person, without distinction of first name, last name, etc.
-- Several tables related to recommendations are not included in the ER diagram, as they are dynamically generated or were added after the initial design.
