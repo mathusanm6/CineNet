@@ -11,11 +11,10 @@ A social forum for cinema fans, based on a database, using PostgreSQL for data p
 2. [Installation](#installation)
 3. [Usage](#usage)
    - [Usage Examples](#usage-examples)
-4. [Errors on the ER Diagram](#errors-on-the-er-diagram)
 
-### Visuals:
+### Visuals
 
-#### ER Diagram:
+#### ER Diagram
 
 <div align="center">
     <img src="./er-diagram-cinenet/erd.png" alt="ER Diagram" width="100%">
@@ -29,11 +28,11 @@ The [ER Diagram](./er-diagram-cinenet/erd.pdf) for the CineNet database is avail
 - The `Person` table should only contain the full name of the person, without distinction of first name, last name, etc.
 - Several tables related to recommendations are not included in the ER diagram, as they are dynamically generated or were added after the initial design.
 
-#### Report:
+#### Report
 
 The report for this project is available in French at [CineNet-Rapport](https://github.com/mathusanm6/CineNet-Rapport) github repository.
 
-#### Screenshots:
+#### Screenshots
 
 <table style="width:100%; border-collapse:collapse;">
     <thead>
@@ -88,7 +87,7 @@ The report for this project is available in French at [CineNet-Rapport](https://
     </tbody>
 </table>
 
-### Installation:
+### Installation
 
 1. Clone the Git repository to your local machine:
 
@@ -114,7 +113,7 @@ $ python3 -m pip install -r requirements.txt
 $ chmod +x ./run.sh
 ```
 
-### Usage:
+### Usage
 
 To use the CineNet program, run the `run.sh` bash script at the root of the project with the options and an additional argument to control the display of output details. Here are the options you can specify:
 
@@ -130,7 +129,7 @@ Each command except `interactive` takes an additional argument to control the di
 - **yes**: To display PostgreSQL output details.
 - **no**: To not display PostgreSQL output details.
 
-#### Usage Examples:
+#### Usage Examples
 
 ```bash
 $ ./run.sh 1 yes  # Only creates the database and displays PostgreSQL outputs
