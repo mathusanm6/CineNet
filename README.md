@@ -14,10 +14,12 @@ $ git clone git@github.com:mathusanm6/CineNet.git
 
 3. Assurez-vous que vous avez Python 3 installé sur votre machine.
 
-4. Installez les dépendances Python requises en exécutant la commande suivante à la racine du projet:
+4. Installez les dépendances Python requises en exécutant les commandes suivantes à la racine du projet:
 
 ```bash
-$ pip3 install -r requirements.txt
+$ python3 -m venv ./cinenet_env
+$ source ./cinenet_env/bin/activate
+$ python3 -m pip install -r requirements.txt
 ```
 
 5. Assurez-vous que vous avez les droits d'exécution pour le script bash `run.sh` en exécutant la commande suivante à la racine du projet:

@@ -11,6 +11,7 @@ function clear_terminal() {
 # Function to run generate_data.py
 function run_generate_csv() {
     echo -e "$(get_color_code "yellow")Running generate_csv.py$(get_color_code "reset")"
+    source cinenet_env/bin/activate
     python3 scripts/generate/generate_csv.py
 }
 
