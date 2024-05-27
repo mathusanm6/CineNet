@@ -39,43 +39,43 @@ The report for this project is available in French at [CineNet-Rapport](https://
     <tbody>
         <tr style="border-bottom:1px solid #dddddd;">
             <td style="padding: 8px; text-align:center;">
-                <img src="images/help.jpeg" alt="Help" style="width:50%;">
+                <img src="images/help.jpeg" alt="Help" style="width:100%;">
             </td>
             <td style="padding: 8px;">Help Page</td>
         </tr>
         <tr style="border-bottom:1px solid #dddddd;">
             <td style="padding: 8px; text-align:center;">
-                <img src="images/interactive-page1.jpeg" alt="Interactive Queries Page" style="width:80%;">
+                <img src="images/interactive-page1.jpeg" alt="Interactive Queries Page" style="width:100%;">
             </td>
             <td style="padding: 8px;">Interactive Queries Page</td>
         </tr>
         <tr style="border-bottom:1px solid #dddddd;">
             <td style="padding: 8px; text-align:center;">
-                <img src="images/follower-search-tool.jpeg" alt="Follower Search Tool" style="width:80%;">
+                <img src="images/follower-search-tool.jpeg" alt="Follower Search Tool" style="width:100%;">
             </td>
             <td style="padding: 8px;">Follower Search Tool</td>
         </tr>
         <tr style="border-bottom:1px solid #dddddd;">
             <td style="padding: 8px; text-align:center;">
-                <img src="images/follower-search-tool-results.jpeg" alt="Follower Search Tool Result" style="width:80%;">
+                <img src="images/follower-search-tool-results.jpeg" alt="Follower Search Tool Result" style="width:100%;">
             </td>
             <td style="padding: 8px;">Follower Search Tool Result</td>
         </tr>
         <tr style="border-bottom:1px solid #dddddd;">
             <td style="padding: 8px; text-align:center;">
-                <img src="images/top-10-popular-events.jpeg" alt="Top 10 Popular Events" style="width:80%;">
+                <img src="images/top-10-popular-events.jpeg" alt="Top 10 Popular Events" style="width:100%;">
             </td>
             <td style="padding: 8px;">Top 10 Popular Events</td>
         </tr>
         <tr style="border-bottom:1px solid #dddddd;">
             <td style="padding: 8px; text-align:center;">
-                <img src="images/movies-recommendation.jpeg" alt="Movies Recommendation" style="width:50%;">
+                <img src="images/movies-recommendation.jpeg" alt="Movies Recommendation" style="width:100%;">
             </td>
             <td style="padding: 8px;">Movies Recommendation</td>
         </tr>
         <tr style="border-bottom:1px solid #dddddd;">
             <td style="padding: 8px; text-align:center;">
-                <img src="images/movie-recommendation-results.jpeg" alt="Movie Recommendation Results" style="width:80%;">
+                <img src="images/movie-recommendation-results.jpeg" alt="Movie Recommendation Results" style="width:100%;">
             </td>
             <td style="padding: 8px;">Movie Recommendation Results</td>
         </tr>
