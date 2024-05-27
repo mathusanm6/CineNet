@@ -1,20 +1,100 @@
 # CineNet
 
-Forum social pour les fans de cinéma, basé sur une base de données, utilisant PostgreSQL pour le traitement des données et des requêtes SQL interactives pour un contenu personnalisé et des recommandations.
+A social forum for cinema fans, based on a database, using PostgreSQL for data processing and interactive SQL queries for personalized content and recommendations.
 
-### Installation :
+### Table of Contents:
 
-1. Clonez le dépôt Git sur votre machine locale :
+1. [Visuals](#visuals)
+   - [ER Diagram](#er-diagram)
+   - [Report](#report)
+   - [Screenshots](#screenshots)
+2. [Installation](#installation)
+3. [Usage](#usage)
+   - [Usage Examples](#usage-examples)
+4. [Errors on the ER Diagram](#errors-on-the-er-diagram)
+
+### Visuals:
+
+#### ER Diagram:
+
+<div align="center">
+    <img src="./er-diagram-cinenet/erd.png" alt="ER Diagram" width="100%">
+</div>
+
+The [ER Diagram](./er-diagram-cinenet/erd.pdf) for the CineNet database is available in the `er-diagram-cinenet` directory. The diagram was created using Lucidchart and exported as a PDF file.
+
+#### Report:
+
+The report for this project is available in French at [CineNet-Rapport](https://github.com/mathusanm6/CineNet-Rapport) github repository.
+
+#### Screenshots:
+
+<table style="width:100%; border-collapse:collapse;">
+    <thead>
+        <tr style="border-bottom:1px solid #dddddd;">
+            <th style="padding: 8px;">Image</th>
+            <th style="padding: 8px;">Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr style="border-bottom:1px solid #dddddd;">
+            <td style="padding: 8px; text-align:center;">
+                <img src="images/help.jpeg" alt="Help" style="width:50%;">
+            </td>
+            <td style="padding: 8px;">Help Page</td>
+        </tr>
+        <tr style="border-bottom:1px solid #dddddd;">
+            <td style="padding: 8px; text-align:center;">
+                <img src="images/interactive-page1.jpeg" alt="Interactive Queries Page" style="width:50%;">
+            </td>
+            <td style="padding: 8px;">Interactive Queries Page</td>
+        </tr>
+        <tr style="border-bottom:1px solid #dddddd;">
+            <td style="padding: 8px; text-align:center;">
+                <img src="images/follower-search-tool.jpeg" alt="Follower Search Tool" style="width:50%;">
+            </td>
+            <td style="padding: 8px;">Follower Search Tool</td>
+        </tr>
+        <tr style="border-bottom:1px solid #dddddd;">
+            <td style="padding: 8px; text-align:center;">
+                <img src="images/follower-search-tool-results.jpeg" alt="Follower Search Tool Result" style="width:50%;">
+            </td>
+            <td style="padding: 8px;">Follower Search Tool Result</td>
+        </tr>
+        <tr style="border-bottom:1px solid #dddddd;">
+            <td style="padding: 8px; text-align:center;">
+                <img src="images/top-10-popular-events.jpeg" alt="Top 10 Popular Events" style="width:50%;">
+            </td>
+            <td style="padding: 8px;">Top 10 Popular Events</td>
+        </tr>
+        <tr style="border-bottom:1px solid #dddddd;">
+            <td style="padding: 8px; text-align:center;">
+                <img src="images/movies-recommendation.jpeg" alt="Movies Recommendation" style="width:50%;">
+            </td>
+            <td style="padding: 8px;">Movies Recommendation</td>
+        </tr>
+        <tr style="border-bottom:1px solid #dddddd;">
+            <td style="padding: 8px; text-align:center;">
+                <img src="images/movie-recommendation-results.jpeg" alt="Movie Recommendation Results" style="width:50%;">
+            </td>
+            <td style="padding: 8px;">Movie Recommendation Results</td>
+        </tr>
+    </tbody>
+</table>
+
+### Installation:
+
+1. Clone the Git repository to your local machine:
 
 ```bash
 $ git clone git@github.com:mathusanm6/CineNet.git
 ```
 
-2. Assurez-vous que vous avez PostgreSQL installé sur votre machine.
+2. Ensure you have PostgreSQL installed on your machine.
 
-3. Assurez-vous que vous avez Python 3 installé sur votre machine.
+3. Ensure you have Python 3 installed on your machine.
 
-4. Installez les dépendances Python requises en exécutant les commandes suivantes à la racine du projet:
+4. Install the required Python dependencies by running the following commands at the root of the project:
 
 ```bash
 $ python3 -m venv ./cinenet_env
@@ -22,40 +102,41 @@ $ source ./cinenet_env/bin/activate
 $ python3 -m pip install -r requirements.txt
 ```
 
-5. Assurez-vous que vous avez les droits d'exécution pour le script bash `run.sh` en exécutant la commande suivante à la racine du projet:
+5. Ensure you have execution rights for the `run.sh` bash script by running the following command at the root of the project:
 
 ```bash
 $ chmod +x ./run.sh
 ```
 
-### Utilisation :
+### Usage:
 
-Pour utiliser le programme CineNet, lancez le script bash `run.sh` à la racine du projet avec les options et un argument supplémentaire pour contrôler l'affichage des détails de sortie. Voici les options que vous pouvez spécifier :
+To use the CineNet program, run the `run.sh` bash script at the root of the project with the options and an additional argument to control the display of output details. Here are the options you can specify:
 
-- **1** : Pour exécuter uniquement le script `create_db.sh`, qui crée la base de données.
-- **2** : Pour exécuter uniquement le script `generate_csv.py`, qui génère des fichiers CSV à partir des données intéressantes.
-- **3** : Pour exécuter uniquement le script `import_data.sh`, qui importe les données depuis les fichiers CSV dans la base de données.
-- **4** : Pour exécuter uniquement le script `init_recommendation.sh`, qui initialise le système de recommandation.
-- **all** : Pour exécuter tous les scripts dans l'ordre : `create_db.sh`, `generate_csv.py` et enfin `import_data.sh`.
-- **interactive** : Pour lancer une session interactive de requêtes SQL sur la base de données.
+- **1**: To only run the `create_db.sh` script, which creates the database.
+- **2**: To only run the `generate_csv.py` script, which generates CSV files from interesting data.
+- **3**: To only run the `import_data.sh` script, which imports data from CSV files into the database.
+- **4**: To only run the `init_recommendation.sh` script, which initializes the recommendation system.
+- **all**: To run all scripts in order: `create_db.sh`, `generate_csv.py`, and finally `import_data.sh`.
+- **interactive**: To start an interactive SQL query session on the database.
 
-Chaque commande sauf `interactive` prend un argument supplémentaire pour contrôler l'affichage des détails de sortie. Les options sont :
-- **yes** : Pour afficher les détails de sortie de PostgreSQL.
-- **no** : Pour ne pas afficher les détails de sortie de PostgreSQL.
+Each command except `interactive` takes an additional argument to control the display of output details. The options are:
 
-#### Exemples d'utilisation :
+- **yes**: To display PostgreSQL output details.
+- **no**: To not display PostgreSQL output details.
+
+#### Usage Examples:
 
 ```bash
-$ ./run.sh 1 yes  # Crée uniquement la base de données et affiche les sorties de PostgreSQL
-$ ./run.sh 2 no   # Exécute uniquement generate_csv.py sans afficher les sorties de PostgreSQL
-$ ./run.sh 3 yes  # Exécute seulement import_data.sh et affiche les sorties de PostgreSQL
-$ ./run.sh 4 no   # Démarre uniquement init_recommendation.sh sans afficher les sorties de PostgreSQL
-$ ./run.sh all yes  # Exécute tous les scripts sauf init_recommendation.sh en séquence et affiche les sorties de PostgreSQL
-$ ./run.sh interactive  # Démarre une session interactive de requêtes SQL
+$ ./run.sh 1 yes  # Only creates the database and displays PostgreSQL outputs
+$ ./run.sh 2 no   # Only runs generate_csv.py without displaying PostgreSQL outputs
+$ ./run.sh 3 yes  # Only runs import_data.sh and displays PostgreSQL outputs
+$ ./run.sh 4 no   # Only starts init_recommendation.sh without displaying PostgreSQL outputs
+$ ./run.sh all yes  # Runs all scripts except init_recommendation.sh in sequence and displays PostgreSQL outputs
+$ ./run.sh interactive  # Starts an interactive SQL query session
 ```
 
-### Erreurs sur le diagramme ER
+### Errors on the ER Diagram
 
-- La table `Genre` ne devrait pas inclure d'attribut de date de sortie, contrairement à ce qui est indiqué sur le diagramme.
-- La table `Person` ne devrait contenir que le nom complet de la personne, sans distinction de prénom, nom de famille, etc.
-- Plusieurs tables liées à la recommandation ne sont pas incluses dans le diagramme ER, car elles sont générées dynamiquement ou ont été ajoutées après la conception initiale.
+- The `Genre` table should not include a release date attribute, contrary to what is indicated on the diagram.
+- The `Person` table should only contain the full name of the person, without distinction of first name, last name, etc.
+- Several tables related to recommendations are not included in the ER diagram, as they are dynamically generated or were added after the initial design.
