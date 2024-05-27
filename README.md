@@ -4,13 +4,55 @@ A social forum for cinema fans, based on a database, using PostgreSQL for data p
 
 ### Table of Contents:
 
-1. [Visuals](#visuals)
+1. [Own Contributions to CineNet](#own-contributions-to-cinenet)
+   - [Database Design and Creation](#database-design-and-creation)
+   - [Data Generation and Import](#data-generation-and-import)
+   - [Interactive Querying](#interactive-querying)
+   - [Recommendation System](#recommendation-system)
+2. [Visuals](#visuals)
    - [ER Diagram](#er-diagram)
    - [Report](#report)
    - [Screenshots](#screenshots)
-2. [Installation](#installation)
-3. [Usage](#usage)
+3. [Installation](#installation)
+4. [Usage](#usage)
    - [Usage Examples](#usage-examples)
+
+### Own Contributions to CineNet
+
+#### Database Design and Creation
+
+- **ER Diagram**: Created the Entity-Relationship (ER) diagram for the CineNet database.
+- **Database Creation**: Developed the database schema and created tables using SQL.
+
+#### Data Generation and Import
+
+- **Generate CSV Files**: Wrote a Python script to generate CSV files with interesting data for the database (using Faker library).
+- **Import Data**: Developed a SQL script to import data from CSV files into the database.
+
+#### Interactive Querying
+
+- **Interactive Queries Script**:
+  - Created an interactive SQL query script to allow users to query the database.
+  - Enhanced user experience by adding a help page and error handling.
+  - Organized scripts using Bash to streamline execution.
+- **16 Interactive Queries**: Implemented 16 diverse and complex queries to showcase the capabilities of the database. Examples include:
+  - Listing all users participating in a given scheduled event.
+  - Listing all users following a specific user.
+  - Listing all users with a minimum number of followers.
+  - Calculating the average number of followers per user per country.
+  - Listing all users who posted after a certain date.
+  - Counting the number of users per country.
+  - Counting the number of posts per tag with a specific emoji reaction.
+  - Calculating the average maximum number of reactions per post.
+  - Listing all users with a specific type of participation in events with a given status.
+  - Get the next scheduled event.
+  - Listing the top 10 events with the most participants in a given year.
+
+#### Recommendation System
+
+- **Recommendation System**:
+  - Developed recommendation systems for movies, events, and posts.
+  - Calculated the cosine similarity between movies and users to recommend movies, for example.
 
 ### Visuals
 
@@ -34,57 +76,60 @@ The report for this project is available in French at [CineNet-Rapport](https://
 
 #### Screenshots
 
-<table style="width:100%; border-collapse:collapse;">
-    <thead>
-        <tr style="border-bottom:1px solid #dddddd;">
-            <th style="padding: 8px;">Image</th>
-            <th style="padding: 8px;">Description</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr style="border-bottom:1px solid #dddddd;">
-            <td style="padding: 8px; text-align:center;">
-                <img src="images/help.jpeg" alt="Help" style="width:100%;">
-            </td>
-            <td style="padding: 8px;">Help Page</td>
-        </tr>
-        <tr style="border-bottom:1px solid #dddddd;">
-            <td style="padding: 8px; text-align:center;">
-                <img src="images/interactive-page1.jpeg" alt="Interactive Queries Page" style="width:100%;">
-            </td>
-            <td style="padding: 8px;">Interactive Queries Page</td>
-        </tr>
-        <tr style="border-bottom:1px solid #dddddd;">
-            <td style="padding: 8px; text-align:center;">
-                <img src="images/follower-search-tool.jpeg" alt="Follower Search Tool" style="width:100%;">
-            </td>
-            <td style="padding: 8px;">Follower Search Tool</td>
-        </tr>
-        <tr style="border-bottom:1px solid #dddddd;">
-            <td style="padding: 8px; text-align:center;">
-                <img src="images/follower-search-tool-results.jpeg" alt="Follower Search Tool Result" style="width:100%;">
-            </td>
-            <td style="padding: 8px;">Follower Search Tool Result</td>
-        </tr>
-        <tr style="border-bottom:1px solid #dddddd;">
-            <td style="padding: 8px; text-align:center;">
-                <img src="images/top-10-popular-events.jpeg" alt="Top 10 Popular Events" style="width:100%;">
-            </td>
-            <td style="padding: 8px;">Top 10 Popular Events</td>
-        </tr>
-        <tr style="border-bottom:1px solid #dddddd;">
-            <td style="padding: 8px; text-align:center;">
-                <img src="images/movies-recommendation.jpeg" alt="Movies Recommendation" style="width:100%;">
-            </td>
-            <td style="padding: 8px;">Movies Recommendation</td>
-        </tr>
-        <tr style="border-bottom:1px solid #dddddd;">
-            <td style="padding: 8px; text-align:center;">
-                <img src="images/movie-recommendation-results.jpeg" alt="Movie Recommendation Results" style="width:100%;">
-            </td>
-            <td style="padding: 8px;">Movie Recommendation Results</td>
-        </tr>
-    </tbody>
+<table align="center" style="width:1200px; table-layout: fixed;">
+  <tr>
+    <td colspan="4">
+      <figure>
+        <img src="images/help.jpeg" alt="Help" width="100%"/>
+        <figcaption align="center">Help Page</figcaption>
+      </figure>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2">
+      <figure>
+        <img src="images/interactive-page1.jpeg" alt="Interactive Queries Page" width="100%"/>
+        <figcaption align="center">Interactive Queries Page</figcaption>
+      </figure>
+    </td>
+    <td colspan="2">
+      <figure>
+        <img src="images/follower-search-tool.jpeg" alt="Follower Search Tool" width="100%"/>
+        <figcaption align="center">Follower Search Tool</figcaption>
+      </figure>
+    </td>
+  </tr>
+  <tr><td colspan="4" style="height: 30px;"></td></tr> <!-- Spacer Row -->
+  <tr>
+    <td colspan="4">
+      <figure>
+        <img src="images/follower-search-tool-results.jpeg" alt="Follower Search Tool Result" width="100%"/>
+        <figcaption align="center">Follower Search Tool Result</figcaption>
+      </figure>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2">
+      <figure>
+        <img src="images/top-10-popular-events.jpeg" alt="Top 10 Popular Events" width="100%"/>
+        <figcaption align="center">Top 10 Popular Events</figcaption>
+      </figure>
+    </td>
+    <td colspan="2">
+      <figure>
+        <img src="images/movies-recommendation.jpeg" alt="Movies Recommendation" width="100%"/>
+        <figcaption align="center">Movies Recommendation</figcaption>
+      </figure>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="4">
+      <figure>
+        <img src="images/movie-recommendation-results.jpeg" alt="Movie Recommendation Results" width="100%"/>
+        <figcaption align="center">Movie Recommendation Results</figcaption>
+      </figure>
+    </td>
+  </tr>
 </table>
 
 ### Installation
